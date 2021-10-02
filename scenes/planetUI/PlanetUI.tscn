@@ -1,0 +1,94 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://sprites/UI_Panel.png" type="Texture" id=1]
+[ext_resource path="res://scenes/planetUI/PlanetUI.gd" type="Script" id=2]
+[ext_resource path="res://sprites/mountain_1.png" type="Texture" id=3]
+
+[node name="PlanetUI" type="CanvasLayer"]
+script = ExtResource( 2 )
+
+[node name="Container" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NamePanel" type="NinePatchRect" parent="Container"]
+self_modulate = Color( 1, 1, 1, 0.517647 )
+margin_right = 312.0
+margin_bottom = 57.0
+texture = ExtResource( 1 )
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NameLabel" type="Label" parent="Container/NamePanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+valign = 1
+
+[node name="Panel2" type="NinePatchRect" parent="Container"]
+self_modulate = Color( 1, 1, 1, 0.517647 )
+margin_top = 57.0
+margin_right = 154.0
+margin_bottom = 341.0
+texture = ExtResource( 1 )
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="NinePatchRect" parent="."]
+self_modulate = Color( 1, 1, 1, 0.509804 )
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -250.0
+margin_right = 250.0
+rect_pivot_offset = Vector2( 0, 250 )
+texture = ExtResource( 1 )
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="CenterContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+columns = 3
+
+[node name="TextureButton" type="TextureButton" parent="."]
+margin_left = 33.6923
+margin_top = 386.168
+margin_right = 91.6923
+margin_bottom = 448.168
+texture_normal = ExtResource( 3 )
+expand = true
+stretch_mode = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="."]
+margin_left = 107.0
+margin_top = 374.0
+margin_right = 201.0
+margin_bottom = 464.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+icon = ExtResource( 3 )
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

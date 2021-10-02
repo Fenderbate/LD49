@@ -13,8 +13,13 @@ func _ready():
 
 func set_planet_focus(new_planet = null):
 	
-	if focused_planet == null or new_planet != focused_planet.get_ref():
+	if is_planet_null() or new_planet != focused_planet.get_ref():
 		focused_planet = weakref(new_planet)
+
+func is_planet_null():
+	if focused_planet == null:
+		return true
+	return false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

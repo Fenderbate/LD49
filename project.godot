@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "PlanetObject",
+"language": "GDScript",
+"path": "res://scenes/planetobject/PlanetObject.gd"
+} ]
+_global_script_class_icons={
+"PlanetObject": ""
+}
+
 [application]
 
 config/name="LD49"
@@ -27,6 +37,10 @@ window/size/test_height=768
 window/vsync/use_vsync=false
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
+
+[global]
+
+pixel=false
 
 [importer_defaults]
 
@@ -70,4 +84,5 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+2d/snapping/use_gpu_pixel_snap=true
 environment/default_environment="res://default_env.tres"
