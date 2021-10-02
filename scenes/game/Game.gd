@@ -22,6 +22,7 @@ func _input(event):
 	if event.is_action_pressed("esc"):
 		if(focusing_on_planet):
 			leave_planet_focus()
+			Global.set_planet_focus()
 			
 	
 
@@ -36,6 +37,7 @@ func focus_on_planet():
 
 func leave_planet_focus():
 	
+	SignalManager.emit_signal("planet_focus_leave")
 	focusing_on_planet = false
 	$Camera/Tween.interpolate_property($Camera,"zoom",$Camera.zoom,default_camera_zoom,1,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
 	$Camera/Tween.interpolate_property($Camera,"position",$Camera.position,Vector2(0,0),1,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
@@ -49,6 +51,7 @@ func camera_follow_planet():
 	pass
 	
 
+
 func _on_planet_interacted(target_planet):
 	
 	Global.set_planet_focus(target_planet)
@@ -59,5 +62,5 @@ func _on_planet_interacted(target_planet):
 
 
 func _on_Tween_tween_completed(object, key):
-	if key == ":position":
-		pass
+	if key == ":position" and focusing_on_planet:
+		SignalManager.emit_signal("planet_focus_enter")

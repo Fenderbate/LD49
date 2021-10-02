@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://scenes/game/Game.gd" type="Script" id=2]
 [ext_resource path="res://scenes/planet/Planet.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/planetUI/PlanetUI.tscn" type="PackedScene" id=4]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 2 )
@@ -22,17 +23,6 @@ min_coords = Vector2( 650, 0 )
 max_coords = Vector2( 800, 250 )
 orbit_speed = 5.0
 
-[node name="PlanetManager" type="CanvasLayer" parent="."]
-
-[node name="Control" type="Control" parent="PlanetManager"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Panel" type="Panel" parent="PlanetManager/Control"]
-margin_right = 255.0
-margin_bottom = 129.0
+[node name="PlanetUI" parent="." instance=ExtResource( 4 )]
 
 [connection signal="tween_completed" from="Camera/Tween" to="." method="_on_Tween_tween_completed"]

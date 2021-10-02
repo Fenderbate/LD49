@@ -26,6 +26,16 @@ func _ready():
 	
 	handle_orbit()
 	
+	var points = []
+	
+	for i in range(360):
+		points.append(Vector2($PlanetSurface/SurfaceCollision.shape.radius,0).rotated(deg2rad(i)))
+		#print(Vector2($PlanetSurface/SurfaceCollision.shape.radius/2,0).rotated(deg2rad(i)))
+	
+	$Body.polygon = points
+	
+	print($Body.polygon.size())
+	
 	pass
 	
 	
@@ -42,7 +52,7 @@ func _physics_process(delta):
 func _input(event):
 	
 	if event.is_action_pressed("left_click") and (Global.focused_planet == null || Global.focused_planet.get_ref() == self):
-		
+		return
 		var t = tree.instance()
 		t.global_position = get_local_mouse_position()
 		add_child(t)
