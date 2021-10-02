@@ -1,6 +1,8 @@
 extends Node2D
 
 export(String)var planet_name = "Planet"
+export(float)var temperature = 0
+export(float)var atmosphere_density = 0
 export(Vector2)var min_coords = Vector2(20,20)
 export(Vector2)var max_coords = Vector2(100,100)
 export(Vector2)var orbit_position = Vector2(0,100)
@@ -8,13 +10,12 @@ export(float)var orbit_speed = 1
 
 export(PackedScene)var tree
 
-var camera_zoom = Vector2(1.3,1.3)
+export(Vector2)var camera_zoom = Vector2(1.3,1.3)
 
 var time = 0
 var orbit_start = true
 
-var temperature = 0
-var atmosphere_density = 0
+
 
 
 

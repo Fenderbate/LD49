@@ -7,7 +7,7 @@ var collision
 
 var speed = 0
 
-var TYPE = {"Flora":0,"Object":1,"Building":2}
+var TYPE = {"Flora":0,"Object":1,"Building":2,"Machine":3}
 
 var type = TYPE.Flora
 
@@ -17,6 +17,8 @@ var sprite = null
 func _ready():
 	look_at(get_parent().global_position)
 	$SpritePivot/Sprite.texture = sprite
+	if type == TYPE.Machine:
+		$SpriteAnimator.play("base")
 
 
 func _physics_process(delta):
