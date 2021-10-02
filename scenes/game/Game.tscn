@@ -12,9 +12,27 @@ texture = ExtResource( 1 )
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 3, 3 )
+zoom = Vector2( 10, 10 )
 
 [node name="Tween" type="Tween" parent="Camera"]
 
 [node name="Planet" parent="." instance=ExtResource( 3 )]
 position = Vector2( 470.402, -4.23785 )
+min_coords = Vector2( 650, 0 )
+max_coords = Vector2( 800, 250 )
+orbit_speed = 5.0
+
+[node name="PlanetManager" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="PlanetManager"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="PlanetManager/Control"]
+margin_right = 255.0
+margin_bottom = 129.0
+
+[connection signal="tween_completed" from="Camera/Tween" to="." method="_on_Tween_tween_completed"]

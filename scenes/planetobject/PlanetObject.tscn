@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://sprites/tree_2.png" type="Texture" id=1]
+[ext_resource path="res://scenes/planetobject/PlanetObject.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+[node name="PlanetObject" type="KinematicBody2D"]
+position = Vector2( 149.907, 67.5287 )
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -8.48528, 0 )
+shape = SubResource( 1 )
+
+[node name="SpritePivot" type="Position2D" parent="."]
+rotation = -1.57079
+
+[node name="Sprite" type="Sprite" parent="SpritePivot"]
+position = Vector2( 0, -15.9099 )
+texture = ExtResource( 1 )
