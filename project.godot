@@ -8,11 +8,26 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node",
+"class": "Global",
+"language": "GDScript",
+"path": "res://Global.gd"
+} ]
+_global_script_class_icons={
+"Global": ""
+}
+
 [application]
 
 config/name="LD49"
 run/main_scene="res://scenes/game/Game.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+SignalManager="*res://scenes/_autoload/SignalManager.gd"
+Global="*res://scenes/_autoload/Global.gd"
 
 [display]
 
