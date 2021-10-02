@@ -23,6 +23,20 @@ min_coords = Vector2( 650, 0 )
 max_coords = Vector2( 800, 250 )
 orbit_speed = 5.0
 
+[node name="Planet2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 1288.31, -4.23785 )
+planet_name = "Poggies"
+min_coords = Vector2( 930, 0 )
+max_coords = Vector2( 1200, 250 )
+orbit_speed = 13.0
+
+[node name="Planet3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 1885.84, -4.23785 )
+planet_name = "Angy"
+min_coords = Vector2( 1300, 0 )
+max_coords = Vector2( 1500, 250 )
+orbit_speed = 20.0
+
 [node name="PlanetUI" parent="." instance=ExtResource( 4 )]
 
 [connection signal="tween_completed" from="Camera/Tween" to="." method="_on_Tween_tween_completed"]
