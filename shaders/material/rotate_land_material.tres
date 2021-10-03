@@ -1,19 +1,22 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=2]
 
-[ext_resource path="res://shaders/texture/x256_mask.png" type="Texture" id=1]
+[ext_resource path="res://sprites/planet_3_overview_texture_untouched.png" type="Texture" id=1]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 uniform float speed = 1.0;
-uniform sampler2D mask_texture;
+uniform sampler2D shader_texture;
+uniform vec2 ratio = vec2(1.0);
 
 void fragment() {
-    vec4 display_texture = texture(TEXTURE,UV);
+    vec2 uv = UV * ratio;
 	
-	display_texture = texture(TEXTURE, vec2(UV.x + TIME*speed, UV.y));
+	vec4 display_texture = texture(shader_texture,uv);
 	
-	display_texture.a *= texture(mask_texture, UV).a;
+	display_texture = texture(shader_texture, vec2(uv.x + TIME*speed, uv.y));
+	
+	display_texture.a *= texture(TEXTURE,UV).a;
 	
 	COLOR = display_texture;
 }"
@@ -21,4 +24,5 @@ void fragment() {
 [resource]
 shader = SubResource( 1 )
 shader_param/speed = 0.5
-shader_param/mask_texture = ExtResource( 1 )
+shader_param/ratio = Vector2( 1, 1 )
+shader_param/shader_texture = ExtResource( 1 )

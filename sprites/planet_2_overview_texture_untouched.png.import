@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/x32_earth_texture.png-d15325fc0aff0678081b810ce9919674.stex"
+path="res://.import/planet_2_overview_texture_untouched.png-979a560693df6b6771fd0264c4d041cb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://shaders/texture/x32_earth_texture.png"
-dest_files=[ "res://.import/x32_earth_texture.png-d15325fc0aff0678081b810ce9919674.stex" ]
+source_file="res://sprites/planet_2_overview_texture_untouched.png"
+dest_files=[ "res://.import/planet_2_overview_texture_untouched.png-979a560693df6b6771fd0264c4d041cb.stex" ]
 
 [params]
 

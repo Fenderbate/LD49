@@ -1,8 +1,10 @@
 extends Node2D
 
+var sun = preload("res://sprites/sun.png")
+
 export(Color)var sun_color
 
-var default_camera_zoom = Vector2(10,10)
+var default_camera_zoom = Vector2(2,2)
 var focusing_on_planet = false
 var moving_camera = false
 
@@ -15,8 +17,6 @@ func _ready():
 
 func _physics_process(delta):
 	
-	update()
-	
 	if moving_camera and focusing_on_planet:
 		
 		if $Camera/MoveTimer.is_stopped():
@@ -25,7 +25,6 @@ func _physics_process(delta):
 		var dist = $Camera.global_position.distance_to(Global.focused_planet.get_ref().global_position)
 		
 		if dist > 80.0:
-			print("wat - ",$Camera.global_position.distance_to(Global.focused_planet.get_ref().global_position))
 			$Camera.global_position += (Global.focused_planet.get_ref().global_position - $Camera.global_position) / 4
 		else:
 			$Camera.global_position = Global.focused_planet.get_ref().global_position
@@ -46,18 +45,18 @@ func _input(event):
 			
 	
 
-func _draw():
-	
-	draw_circle(Vector2(),256,sun_color)
 
 func focus_on_planet():
 	
 	focusing_on_planet = true
 	moving_camera = true
-	$Camera/Tween.interpolate_property($Camera,"zoom",$Camera.zoom,Global.focused_planet.get_ref().camera_zoom,1,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
-	#$Camera/Tween.interpolate_property($Camera,"position",$Camera.position,Global.focused_planet.get_ref().global_position,1,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
-	$Tween.interpolate_property($BG,"self_modulate",$BG.self_modulate,Color(1,1,1,0),1)
-	$Camera/Tween.start()
+	$Tween.interpolate_property($Camera,"zoom",$Camera.zoom,Global.focused_planet.get_ref().camera_zoom,1,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
+	#$Tween.interpolate_property($BG,"self_modulate",$BG.self_modulate,Color(1,1,1,0),1)
+	for planet in get_tree().get_nodes_in_group("Planet"):
+		if !Global.check_focused_planet(planet):
+			$Tween.interpolate_property(planet,"modulate",planet.modulate,Color(1,1,1,0),0.6,Tween.TRANS_EXPO,Tween.EASE_IN)
+	$Tween.interpolate_property($Sun,"modulate",$Sun.modulate,Color(1,1,1,0),0.6,Tween.TRANS_EXPO,Tween.EASE_IN)
+	$Tween.start()
 	
 	
 
@@ -65,10 +64,14 @@ func leave_planet_focus():
 	
 	SignalManager.emit_signal("planet_focus_leave")
 	focusing_on_planet = false
-	$Camera/Tween.interpolate_property($Camera,"zoom",$Camera.zoom,default_camera_zoom,1,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
-	$Camera/Tween.interpolate_property($Camera,"position",$Camera.position,Vector2(0,0),1,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
+	$Tween.interpolate_property($Camera,"zoom",$Camera.zoom,default_camera_zoom,1,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
+	$Tween.interpolate_property($Camera,"position",$Camera.position,Vector2(0,0),1,Tween.TRANS_SINE,Tween.EASE_IN_OUT)
 	$Tween.interpolate_property($BG,"self_modulate",$BG.self_modulate,Color(1,1,1,1),1)
-	$Camera/Tween.start()
+	for planet in get_tree().get_nodes_in_group("Planet"):
+		if !Global.check_focused_planet(planet):
+			$Tween.interpolate_property(planet,"modulate",planet.modulate,Color(1,1,1,1),0.6,Tween.TRANS_EXPO,Tween.EASE_IN)
+	$Tween.interpolate_property($Sun,"modulate",$Sun.modulate,Color(1,1,1,1),0.6,Tween.TRANS_EXPO,Tween.EASE_IN)
+	$Tween.start()
 	
 
 func camera_follow_planet():
