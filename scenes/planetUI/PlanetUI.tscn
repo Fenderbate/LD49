@@ -6,7 +6,7 @@
 [ext_resource path="res://misc/Machine_UI_texture.tres" type="Texture" id=4]
 [ext_resource path="res://sprites/UI_temp_bar_alt.png" type="Texture" id=5]
 [ext_resource path="res://sprites/UI_oxigen_bar_alt.png" type="Texture" id=6]
-[ext_resource path="res://misc/Font.tres" type="DynamicFont" id=7]
+[ext_resource path="res://misc/Font_x36.tres" type="DynamicFont" id=7]
 [ext_resource path="res://sprites/slider.png" type="Texture" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]

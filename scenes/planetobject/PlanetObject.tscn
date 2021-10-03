@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://sprites/tree_2.png" type="Texture" id=1]
+[ext_resource path="res://misc/Machine_UI_texture.tres" type="Texture" id=1]
 [ext_resource path="res://scenes/planetobject/PlanetObject.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -81,6 +81,18 @@ tracks/1/keys = {
 "update": 1,
 "values": [ 4 ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("SpritePivot/Sprite:texture:region")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 0, 0, 128, 32 ) ]
+}
 
 [node name="PlanetObject" type="KinematicBody2D"]
 position = Vector2( 149.907, 67.5287 )
@@ -98,6 +110,7 @@ rotation = -1.57079
 position = Vector2( 0, -16 )
 z_index = -1
 texture = ExtResource( 1 )
+hframes = 4
 
 [node name="Raycast" type="RayCast2D" parent="."]
 position = Vector2( 0.093, 10 )

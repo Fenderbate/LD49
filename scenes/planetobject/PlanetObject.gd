@@ -1,33 +1,32 @@
 extends KinematicBody2D
 class_name PlanetObject
 
+# calculations
 var moving = true
-
 var collision
-
 var speed = 0
 
-var TYPE = {"Flora":0,"Object":1,"Building":2,"Machine":3}
-
-var type = TYPE.Flora
-
-var sprite = null
+# init vars
+var data = {
+	"Type" : Global.OBJECT_TYPE.FLORA,
+	"FloraSize" : Global.FLORA_DELTA.SMALL,
+	"Sprite" : null,
+	"Name" : "N/A"
+}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	look_at(get_parent().global_position)
-	$SpritePivot/Sprite.texture = sprite
-	if type == TYPE.Machine:
+	$SpritePivot/Sprite.texture = data["Sprite"]
+	if data["Type"] == Global.OBJECT_TYPE.MACHINE:
 		$SpriteAnimator.play("base")
-	elif type == TYPE.Flora:
-		if $SpritePivot/Sprite.texture.resource_path.match("*bush_1*"):
-			Global.focused_planet.get_ref().oxygen_delta += 1
-		elif $SpritePivot/Sprite.texture.resource_path.match("*tree_1*"):
-			Global.focused_planet.get_ref().oxygen_delta += 2
-		elif $SpritePivot/Sprite.texture.resource_path.match("*tree_2*"):
-			Global.focused_planet.get_ref().oxygen_delta += 3
-		else:
-			print("----",$SpritePivot/Sprite.texture.resource_name)
+	elif data["Type"] == Global.OBJECT_TYPE.FLORA:
+		Global.focused_planet.get_ref().oxygen_delta += data["FloraSize"]
+	else:
+		print("unknown object: ",data["Name"])
+	
+	
+	
 
 
 func _physics_process(delta):
@@ -44,7 +43,6 @@ func _physics_process(delta):
 		position += motion
 		
 		if col and col.collider.is_in_group("Planet"):
-			print(col.collider.name)
 			$AnimationPlayer.play("squash")
 			$Particles.emitting = true
 			moving = false

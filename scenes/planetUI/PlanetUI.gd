@@ -1,20 +1,19 @@
 extends CanvasLayer
 
 var object = preload("res://scenes/planetobject/PlanetObject.tscn")
+var item_holder = preload("res://scenes/itemholder/ItemHolder.tscn")
 
-var planet_objects = [
-	"tree_1",
-	"tree_2",
-	"bush_1",
-	"mountain_1",
-	"house_1",
-	"temperature_machine_1"
-	
-	
-] # add sprite names here
+var planet_objects = {
+	"tree_1" : {"Texture":preload("res://sprites/tree_1.png"),"Type":Global.OBJECT_TYPE.FLORA,"Size":Global.FLORA_DELTA.MED},
+	"tree_2" : {"Texture":preload("res://sprites/tree_2.png"),"Type":Global.OBJECT_TYPE.FLORA,"Size":Global.FLORA_DELTA.BIG},
+	"bush_1" : {"Texture":preload("res://sprites/bush_1.png"),"Type":Global.OBJECT_TYPE.FLORA,"Size":Global.FLORA_DELTA.SMALL},
+	"mountain_1" : {"Texture":preload("res://sprites/mountain_1.png"),"Type":Global.OBJECT_TYPE.OBJECT},
+	"house_1" : {"Texture":preload("res://sprites/house_1.png"),"Type":Global.OBJECT_TYPE.BUILDING},
+	"machine_1" : {"Texture":preload("res://misc/Machine_UI_texture.tres"),"Type":Global.OBJECT_TYPE.MACHINE}
+}
 
 
-var select_index = 0
+var select_index = null
 
 var spawn_point = Vector2()
 
@@ -27,20 +26,15 @@ func _ready():
 	
 	
 	
-	for i in planet_objects.size():
-		var btn = Button.new()#TextureButton.new()
-		#btn.texture_normal = load(str("res://sprites/",planet_objects[select_index],".png"))
-		if planet_objects[i].match("*machine*"):
-			btn.icon = load("res://misc/Machine_UI_texture.tres")
-		else:
-			btn.icon = load(str("res://sprites/",planet_objects[i],".png"))
-		btn.rect_min_size = Vector2(80,80)
-		#btn.expand = true
-		btn.expand_icon = true
-		#btn.stretch_mode = TextureButton.STRETCH_KEEP_CENTERED
-		btn.name = str(i)
+	for item in planet_objects:
+		
+		var btn = item_holder.instance()
+		btn.icon = planet_objects[item]["Texture"]
+		btn.type = planet_objects[item]["Type"]
+		btn.obj_name = item
 		$Container/CenterContainer/GridContainer.add_child(btn)
-		btn.connect("button_down",self,"on_object_button_pressed",[btn.name])
+		btn.get_node("SelectButton").connect("button_down",self,"on_object_button_pressed",[btn.obj_name])
+		btn.get_node("AddButton").connect("button_down",self,"on_object_add_button_pressed",[btn.obj_name])
 
 func _unhandled_input(event):
 	
@@ -56,7 +50,6 @@ func _unhandled_input(event):
 		var result = space_state.intersect_ray(mouse_pos, planet.global_position, [self], 1)
 		
 		if result:
-			print("asd")
 			spawn_point = result["position"] - planet.global_position
 			planet.col_pt = spawn_point
 			spawn_object()
@@ -74,11 +67,10 @@ func spawn_object():
 	
 	var obj = object.instance()
 	obj.position = spawn_point#Global.focused_planet.get_ref().get_local_mouse_position()
-	if planet_objects[select_index].match("*machine*"):
-		obj.type = obj.TYPE.Machine
-	else:
-		obj.type = obj.TYPE.Flora
-	obj.sprite = load(str("res://sprites/",planet_objects[select_index],".png"))
+	obj.data["Type"] = planet_objects[select_index]["Type"]
+	obj.data["Sprite"] = planet_objects[select_index]["Texture"]
+	obj.data["Name"] = select_index
+	
 	Global.focused_planet.get_ref().get_node("Objects").add_child(obj)
 	
 
@@ -96,7 +88,11 @@ func on_planet_ui_updated(temperature,atmosphere,population):
 	$Container/Panel2/VBoxContainer/TempDisplay/TempSlider.value = temperature
 
 func on_object_button_pressed(name):
-	select_index = int(name)
+	select_index = name
 	print(name)
 
+func on_object_add_button_pressed(name):
+	
+	print("add resource!")
+	
 
