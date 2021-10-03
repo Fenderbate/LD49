@@ -32,18 +32,26 @@ func _ready():
 
 func _physics_process(delta):
 	
+	speed += Global.GRAVITY * delta
+	var motion = (get_parent().global_position - global_position).normalized() * speed
+	var col = move_and_collide(motion,true,true,true)
+	
 	if moving:
-		speed += Global.GRAVITY * delta
 		
-		position += (get_parent().global_position - global_position).normalized() * speed
+		if col and col.collider.is_in_group("Planet") and $Raycast.is_colliding():
+			moving = false
 		
+		position += motion
 		
-		
-		if $Raycast.is_colliding():
+		if col and col.collider.is_in_group("Planet"):
+			print(col.collider.name)
 			$AnimationPlayer.play("squash")
 			$Particles.emitting = true
-			if $Raycast.is_colliding() and $Raycast2.is_colliding():
-				moving = false
+			moving = false
+	else:
+		if !col:
+			moving = true
+		
 	
 	
 	

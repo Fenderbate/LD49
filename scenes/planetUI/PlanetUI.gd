@@ -16,6 +16,8 @@ var planet_objects = [
 
 var select_index = 0
 
+var spawn_point = Vector2()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Container.hide()
@@ -46,14 +48,32 @@ func _unhandled_input(event):
 		return
 	
 	if event.is_action_pressed("left_click"):
-		spawn_object()
+		var planet = Global.focused_planet.get_ref()
+		
+		var mouse_pos = Global.focused_planet.get_ref().get_global_mouse_position()
+		
+		var space_state = get_viewport().get_world_2d().direct_space_state
+		var result = space_state.intersect_ray(mouse_pos, planet.global_position, [self], 1)
+		
+		if result:
+			print("asd")
+			spawn_point = result["position"] - planet.global_position
+			planet.col_pt = spawn_point
+			spawn_object()
+
+func _input(event):
+	
+	if Global.is_planet_null() or !$Container.visible:
+		return
+	
+	
 	
 
 func spawn_object():
 	
 	
 	var obj = object.instance()
-	obj.position = Global.focused_planet.get_ref().get_local_mouse_position()
+	obj.position = spawn_point#Global.focused_planet.get_ref().get_local_mouse_position()
 	if planet_objects[select_index].match("*machine*"):
 		obj.type = obj.TYPE.Machine
 	else:
