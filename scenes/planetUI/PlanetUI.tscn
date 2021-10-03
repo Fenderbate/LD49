@@ -128,10 +128,13 @@ __meta__ = {
 
 [node name="CenterContainer" type="NinePatchRect" parent="Container"]
 self_modulate = Color( 1, 1, 1, 0.509804 )
+anchor_left = 0.5
 anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-margin_top = -250.0
-margin_right = 250.0
+margin_left = -291.0
+margin_top = -83.0
+margin_right = 291.0
 rect_pivot_offset = Vector2( 0, 250 )
 texture = ExtResource( 1 )
 patch_margin_left = 3
@@ -142,10 +145,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GridContainer" type="GridContainer" parent="Container/CenterContainer"]
+[node name="GridContainer" type="HBoxContainer" parent="Container/CenterContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-columns = 3
 
 [node name="TextureButton" type="TextureButton" parent="Container"]
 visible = false

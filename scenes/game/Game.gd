@@ -4,7 +4,7 @@ var sun = preload("res://sprites/sun.png")
 
 export(Color)var sun_color
 
-var default_camera_zoom = Vector2(2,2)
+var default_camera_zoom = Vector2(1.2,1.2)
 var focusing_on_planet = false
 var moving_camera = false
 
@@ -12,10 +12,32 @@ var time = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Global.reset_data()
+	
 	SignalManager.connect("planet_interact",self,"_on_planet_interacted")
+	
+
+func _draw():
+	
+	#draw_polyline($PlanetOrbit.curve.get_baked_points(), Color.beige, 5, true)
+	
+	for path in get_tree().get_nodes_in_group("Path"):
+		
+		var points = path.curve.get_baked_points()
+		var color = path.get_children()[0].path_color
+		
+		var index = 0
+		
+		for point in range(points.size()):
+			if index + 2 < points.size():
+				draw_line(points[index],points[index + 2],color,1)
+				index += 4
+	
 
 
 func _physics_process(delta):
+	
+	update()
 	
 	if moving_camera and focusing_on_planet:
 		
@@ -24,8 +46,8 @@ func _physics_process(delta):
 		
 		var dist = $Camera.global_position.distance_to(Global.focused_planet.get_ref().global_position)
 		
-		if dist > 80.0:
-			$Camera.global_position += (Global.focused_planet.get_ref().global_position - $Camera.global_position) / 4
+		if dist > 20.0:
+			$Camera.global_position += (Global.focused_planet.get_ref().global_position - $Camera.global_position) / 7
 		else:
 			$Camera.global_position = Global.focused_planet.get_ref().global_position
 		moving_camera = true

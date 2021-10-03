@@ -18,22 +18,22 @@
 
 [sub_resource type="Curve2D" id=1]
 _data = {
-"points": PoolVector2Array( 9.99383, -79.31, -9.99383, 79.31, 192, 0, 150.355, -7.31021, -150.355, 7.31021, 0, 192, 3.93298, 76.1568, -3.93298, -76.1568, -192, 0, -136.079, 5.64973, 136.079, -5.64973, 0, -192, -5.6035, -113.484, 5.6035, 113.484, 192, 0 )
+"points": PoolVector2Array( 9.99383, -79.31, -9.99383, 79.31, 384, 0, 150.355, -7.31021, -150.355, 7.31021, -32, 256, 3.93298, 76.1568, -3.93298, -76.1568, -256, 32, -136.079, 5.64973, 136.079, -5.64973, 0, -160, -5.6035, -113.484, 5.6035, 113.484, 384, 0 )
 }
 
 [sub_resource type="Curve2D" id=2]
 _data = {
-"points": PoolVector2Array( -6.94762, -128.455, 6.94762, 128.455, 288, 32, 234.715, 14.7752, -234.715, -14.7752, 32, 288, 1.43689, 56.5639, -1.43689, -56.5639, -224, 32, -232.342, 24.8848, 232.342, -24.8848, 32, -224, 5.62268, -110.284, -5.62268, 110.284, 288, 32 )
+"points": PoolVector2Array( 5.76594, -256.65, -5.76594, 256.65, 288, 32, 153.225, 1.4031, -153.225, -1.4031, 32, 320, -0.416273, 283.023, 0.416273, -283.023, -544, -224, -244.792, 0.843168, 244.792, -0.843168, 32, -224, 13.0389, -104.987, -13.0389, 104.987, 288, 32 )
 }
 
 [sub_resource type="Curve2D" id=3]
 _data = {
-"points": PoolVector2Array( 2.37839, -57.0817, -2.37839, 57.0817, 320, 0, 332.697, 15.7182, -332.697, -15.7182, 0, 320, -2.24961, 86.4396, 2.24961, -86.4396, -320, 0, -319.977, 4.74072, 319.977, -4.74072, 0, -320, -0.0563259, -69.4828, 0.0563259, 69.4828, 320, 0 )
+"points": PoolVector2Array( 2.37839, -57.0817, -2.37839, 57.0817, 320, 0, 332.697, 15.7182, -332.697, -15.7182, 0, 320, -9.3768, 248.583, 9.3768, -248.583, -512, 0, -319.977, 4.74072, 319.977, -4.74072, 0, -320, -0.0563259, -69.4828, 0.0563259, 69.4828, 320, 0 )
 }
 
 [sub_resource type="Curve2D" id=4]
 _data = {
-"points": PoolVector2Array( -3.36354, -265.724, 3.36354, 265.724, 384, 0, 277.503, -3.20013, -277.503, 3.20013, 0, 384, -1.20012, 180.972, 1.20012, -180.972, -384, 0, -332.636, 31.4041, 332.636, -31.4041, 0, -384, -0.399984, -190.779, 0.399984, 190.779, 384, 0 )
+"points": PoolVector2Array( -3.36354, -265.724, 3.36354, 265.724, 576, 0, 277.503, -3.20013, -277.503, 3.20013, 0, 384, -1.20012, 180.972, 1.20012, -180.972, -416, 0, -332.636, 31.4041, 332.636, -31.4041, 0, -384, -0.399984, -190.779, 0.399984, 190.779, 576, 0 )
 }
 
 [node name="Game" type="Node2D"]
@@ -49,30 +49,42 @@ texture = ExtResource( 1 )
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 2, 2 )
+zoom = Vector2( 1.2, 1.2 )
 
 [node name="Tween" type="Tween" parent="Camera"]
 
 [node name="MoveTimer" type="Timer" parent="Camera"]
 one_shot = true
 
-[node name="PlanetOrbit" type="Path2D" parent="."]
+[node name="PlanetOrbit" type="Path2D" parent="." groups=[
+"Path",
+]]
 curve = SubResource( 1 )
 
 [node name="Planet" parent="PlanetOrbit" instance=ExtResource( 3 )]
-position = Vector2( 192, 0 )
+position = Vector2( 82.9184, 203.431 )
+offset = 220.832
+planet_name = "Planet1"
+path_color = Color( 0.117647, 0.737255, 0.45098, 1 )
 temperature = 80.0
 camera_zoom = Vector2( 1, 1 )
 shader_mask = ExtResource( 15 )
+shader_spin_speed = 0.438086
 
-[node name="PlanetOrbit2" type="Path2D" parent="."]
+[node name="PlanetOrbit2" type="Path2D" parent="." groups=[
+"Path",
+]]
 position = Vector2( -32, -32 )
 curve = SubResource( 2 )
 
 [node name="Planet2" parent="PlanetOrbit2" instance=ExtResource( 3 )]
-position = Vector2( 288, 32 )
-planet_name = "Poggies"
-temperature = 30.0
+position = Vector2( 318, 62 )
+offset = 1930.19
+h_offset = 30.0
+v_offset = 30.0
+planet_name = "Planet2"
+path_color = Color( 0.686275, 0.298039, 0.129412, 1 )
+temperature = 500.0
 atmosphere_density = 10.0
 orbit_speed = 2.0
 camera_zoom = Vector2( 1, 1 )
@@ -80,14 +92,19 @@ highlight_ring = ExtResource( 6 )
 shader_mask = ExtResource( 15 )
 barren_shader_texture = ExtResource( 7 )
 terraformed_shader_texture = ExtResource( 9 )
+shader_spin_speed = 0.423699
 planet_sprite = ExtResource( 14 )
 
-[node name="PlanetOrbit3" type="Path2D" parent="."]
+[node name="PlanetOrbit3" type="Path2D" parent="." groups=[
+"Path",
+]]
 curve = SubResource( 3 )
 
 [node name="Planet3" parent="PlanetOrbit3" instance=ExtResource( 3 )]
-position = Vector2( 320, 0 )
-planet_name = "Poggies"
+position = Vector2( 112.245, -308.953 )
+offset = 2012.51
+planet_name = "Planet3"
+path_color = Color( 0.301961, 0.607843, 0.901961, 1 )
 temperature = 30.0
 atmosphere_density = 10.0
 orbit_speed = 3.0
@@ -95,19 +112,25 @@ camera_zoom = Vector2( 1, 1 )
 highlight_ring = ExtResource( 13 )
 barren_shader_texture = ExtResource( 10 )
 terraformed_shader_texture = ExtResource( 8 )
+shader_spin_speed = 0.214033
 planet_sprite = ExtResource( 11 )
 planet_grass = ExtResource( 12 )
 
-[node name="PlanetOrbit4" type="Path2D" parent="."]
+[node name="PlanetOrbit4" type="Path2D" parent="." groups=[
+"Path",
+]]
 curve = SubResource( 4 )
 
 [node name="Planet4" parent="PlanetOrbit4" instance=ExtResource( 3 )]
-position = Vector2( 384, 0 )
-planet_name = "Angy"
+position = Vector2( 422.321, 272.635 )
+offset = 326.947
+planet_name = "Planet4"
+path_color = Color( 0.117647, 0.737255, 0.45098, 1 )
 atmosphere_density = 20.0
 orbit_speed = 4.0
 camera_zoom = Vector2( 1, 1 )
 highlight_ring = ExtResource( 13 )
+shader_spin_speed = 0.27631
 
 [node name="PlanetUI" parent="." instance=ExtResource( 4 )]
 
