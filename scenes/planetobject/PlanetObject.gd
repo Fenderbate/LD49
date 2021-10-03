@@ -19,6 +19,15 @@ func _ready():
 	$SpritePivot/Sprite.texture = sprite
 	if type == TYPE.Machine:
 		$SpriteAnimator.play("base")
+	elif type == TYPE.Flora:
+		if $SpritePivot/Sprite.texture.resource_path.match("*bush_1*"):
+			Global.focused_planet.get_ref().oxygen_delta += 1
+		elif $SpritePivot/Sprite.texture.resource_path.match("*tree_1*"):
+			Global.focused_planet.get_ref().oxygen_delta += 2
+		elif $SpritePivot/Sprite.texture.resource_path.match("*tree_2*"):
+			Global.focused_planet.get_ref().oxygen_delta += 3
+		else:
+			print("----",$SpritePivot/Sprite.texture.resource_name)
 
 
 func _physics_process(delta):

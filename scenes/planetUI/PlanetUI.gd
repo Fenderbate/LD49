@@ -21,6 +21,7 @@ func _ready():
 	$Container.hide()
 	SignalManager.connect("planet_focus_enter",self,"on_planet_focus_entered")
 	SignalManager.connect("planet_focus_leave",self,"on_planet_focus_left")
+	SignalManager.connect("update_planet_UI",self,"on_planet_ui_updated")
 	
 	
 	
@@ -46,7 +47,6 @@ func _unhandled_input(event):
 	
 	if event.is_action_pressed("left_click"):
 		spawn_object()
-		print("asd")
 	
 
 func spawn_object():
@@ -56,12 +56,10 @@ func spawn_object():
 	obj.position = Global.focused_planet.get_ref().get_local_mouse_position()
 	if planet_objects[select_index].match("*machine*"):
 		obj.type = obj.TYPE.Machine
-		print("MACINE")
 	else:
 		obj.type = obj.TYPE.Flora
-		print(":((")
 	obj.sprite = load(str("res://sprites/",planet_objects[select_index],".png"))
-	Global.focused_planet.get_ref().add_child(obj)
+	Global.focused_planet.get_ref().get_node("Objects").add_child(obj)
 	
 
 
@@ -72,6 +70,10 @@ func on_planet_focus_entered():
 
 func on_planet_focus_left():
 	$Container.hide()
+
+func on_planet_ui_updated(temperature,atmosphere,population):
+	$Container/Panel2/VBoxContainer/OxygenDisplay/OxygenSlider.value = atmosphere
+	$Container/Panel2/VBoxContainer/TempDisplay/TempSlider.value = temperature
 
 func on_object_button_pressed(name):
 	select_index = int(name)
