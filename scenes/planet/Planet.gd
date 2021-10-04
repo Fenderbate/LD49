@@ -4,6 +4,7 @@ tool
 
 export(String)var planet_name = "Planet"
 export(Color)var path_color
+export(Curve)var atmosphere_alpha_curve
 export(float)var temperature = 0
 export(float)var atmosphere_density = 0
 export(float)var population = 0
@@ -24,6 +25,8 @@ var oxygen_delta = 0
 
 
 var hospitablle = false
+
+var dist = Vector2()
 
 #test var, delete when planet raycast works
 var col_pt = Vector2()
@@ -49,17 +52,21 @@ func _ready():
 	$Body.self_modulate = Color(1,1,1,0)
 	
 	$SSInteract/InteractShape.shape.radius = shader_mask.get_width()/2
-	$PlanetSurface/SurfaceCollision.shape.radius = (planet_sprite.get_width()/2)-5
+	$PlanetSurface/SurfaceCollision.shape.radius = (planet_sprite.get_width()/2)-10
 	
 	
-	
-
 
 func _physics_process(delta):
 	
 	if !Engine.editor_hint:
 		
+		if Global.check_focused_planet(self):
+			pass
+			#print(planet_name," distance ",dist)
+		
 		offset += orbit_speed
+		
+		$Atmosphere.self_modulate.a = atmosphere_alpha_curve.interpolate(atmosphere_density / Global.MAX_ATMOSPHERE)
 		
 		var first_temp_delta = temp_delta
 		
@@ -99,7 +106,7 @@ func check_temp_zone():
 	
 	
 	
-	var dist = position.distance_to(Vector2())
+	dist = (global_position - position).distance_to(Vector2() - global_position)
 	
 	if dist <= Global.SCORCH_DISTANCE:
 		temp_delta = Global.TEMP_DELTA.SCORCH
@@ -125,7 +132,7 @@ func animate_overview(show_planet = true):
 		$Tween.interpolate_property($OverviewShader/OverviewSprite,"self_modulate",$OverviewShader/OverviewSprite.self_modulate,Color(1,1,1,0),1,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Halo,"self_modulate",$Halo.self_modulate,Color(1,1,1,0),1,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Clouds,"modulate",$Clouds.modulate,Color(1,1,1,1),1.2,Tween.TRANS_EXPO)
-		$Tween.interpolate_property($Atmosphere,"self_modulate",$Atmosphere.self_modulate,Color(1,1,1,1),1.2,Tween.TRANS_EXPO)
+		$Tween.interpolate_property($Atmosphere,"modulate",$Atmosphere.modulate,Color(1,1,1,1),1.2,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Body,"self_modulate",$Body.self_modulate,Color(1,1,1,1),1,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Grass,"self_modulate",$Grass.self_modulate,Color(1,1,1,1),1,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Objects,"modulate",$Objects.modulate,Color(1,1,1,1),1,Tween.TRANS_EXPO)
@@ -135,7 +142,7 @@ func animate_overview(show_planet = true):
 		$Tween.interpolate_property($OverviewShader/OverviewSprite,"self_modulate",$OverviewShader/OverviewSprite.self_modulate,Color(1,1,1,1),1,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Halo,"self_modulate",$Halo.self_modulate,Color(1,1,1,1),1,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Clouds,"modulate",$Clouds.modulate,Color(1,1,1,0),1.2,Tween.TRANS_EXPO)
-		$Tween.interpolate_property($Atmosphere,"self_modulate",$Atmosphere.self_modulate,Color(1,1,1,0),1.2,Tween.TRANS_EXPO)
+		$Tween.interpolate_property($Atmosphere,"modulate",$Atmosphere.modulate,Color(1,1,1,0),1.2,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Body,"self_modulate",$Body.self_modulate,Color(1,1,1,0),1,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Grass,"self_modulate",$Grass.self_modulate,Color(1,1,1,0),1,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Objects,"modulate",$Objects.modulate,Color(1,1,1,0),1,Tween.TRANS_EXPO)
@@ -157,23 +164,25 @@ func _on_UIUpdateTimer_timeout():
 	temperature = clamp(temperature + temp_delta, 0, Global.MAX_TEMPERATURE)
 	atmosphere_density = clamp(atmosphere_density + oxygen_delta, 0, Global.MAX_ATMOSPHERE)
 	if (temperature < 600 and temperature > 400) and atmosphere_density > 800:
-		if !$Grass.visible and Global.check_focused_planet(self):
-			$Tween.interpolate_property($Grass,"self_modulate",Color(1,1,1,0),Color(1,1,1,1),0.5,Tween.TRANS_EXPO,Tween.EASE_OUT)
-			$Tween.start()
-			$Grass.show()
-		hospitablle = true
 		mat.set_shader_param("shader_texture",terraformed_shader_texture)
 		$Clouds.show()
-		$Atmosphere.show()
-		print($Atmosphere.visible," - ",$Atmosphere.self_modulate)
-	elif temperature > 600 or temperature < 400 or atmosphere_density < 800:
 		if !$Grass.visible and Global.check_focused_planet(self):
-			$Tween.interpolate_property($Grass,"self_modulate",Color(1,1,1,1),Color(1,1,1,0),0.5,Tween.TRANS_EXPO,Tween.EASE_OUT)
+			$Grass.show()
+			$Tween.interpolate_property($Grass.material,"shader_param/flash_modifier",1,0,1,Tween.TRANS_EXPO,Tween.EASE_OUT)
 			$Tween.start()
-		hospitablle = false
+			yield($Tween,"tween_completed")
+		hospitablle = true
+		
+	elif temperature > 600 or temperature < 400 or atmosphere_density < 800:
 		mat.set_shader_param("shader_texture",barren_shader_texture)
 		$Clouds.hide()
-		$Atmosphere.hide()
+		if $Grass.visible and Global.check_focused_planet(self):
+			$Tween.interpolate_property($Grass,"self_modulate",$Grass.self_modulate,Color(1,1,1,0),0.75,Tween.TRANS_EXPO,Tween.EASE_OUT)
+			$Tween.start()
+			yield($Tween,"tween_completed")
+			$Grass.hide()
+		hospitablle = false
+		
 		
 	if Global.check_focused_planet(self):
 		SignalManager.emit_signal("update_planet_UI",temperature,atmosphere_density,population)
@@ -186,4 +195,5 @@ func on_planet_interacted(planet):
 	else:
 		$PlanetSurface.collision_layer = 1
 		$PlanetSurface.collision_mask = 1
+
 

@@ -41,6 +41,7 @@ window/stretch/aspect="keep"
 [global]
 
 pixel=false
+clear=false
 
 [importer_defaults]
 

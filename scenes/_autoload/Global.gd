@@ -1,32 +1,35 @@
 extends Node
 
 var cloud = preload("res://sprites/cloud_1.png")
+var currency_texture = preload("res://misc/CurrencyTexture.tres")
+var person = preload("res://scenes/person/Person.tscn")
 
 var GRAVITY = 10
 
 var focused_planet = null
 
 
-var SCORCH_DISTANCE = 200
-var HEAT_DISTANCE = 220
-var CONFORT_MINIMUM = 230
-var CONFORT_MAXIMUM = 250
+var SCORCH_DISTANCE = 180
+var HEAT_DISTANCE = 210
+var CONFORT_MINIMUM = 220
+var CONFORT_MAXIMUM = 230
 var COLD_DISTANCE = 350
 var FREEZE_DISTANCE = 400
 
 var TEMP_DELTA = {"SCORCH":50,"HEAT":30,"CONFORT":0,"COLD":-30,"FREEZE":-50}
 
-var FLORA_DELTA = {"SMALL":1,"MED":2,"BIG":3}
+var OXYGEN_DELTA = {"NEG_BIG":-3,"NEG_MED":-2,"NEG_SMALL":-1,"NONE":0,"SMALL":1,"MED":2,"BIG":3}
 
-var OBJECT_TYPE = {"FLORA":0,"OBJECT":1,"BUILDING":2,"MACHINE":3}
+var OBJECT_TYPE = {"FLORA_SMALL":0,"FLORA_MED":1,"FLORA_BIG":2,"OBJECT":3,"BUILDING":4,"MACHINE":5}
+
+var OBJECT_TYPE_COST = {"FLORA_SMALL":1,"FLORA_MED":2,"FLORA_BIG":3,"OBJECT":3,"BUILDING":4,"MACHINE":5}
+
+var OBJECT_TYPE_SUPPLY = {"FLORA_SMALL":5,"FLORA_MED":2,"FLORA_BIG":1,"OBJECT":2,"BUILDING":1,"MACHINE":1}
 
 var MAX_ATMOSPHERE = 1000
 var MAX_TEMPERATURE = 1000
 
-
-var plant_supply = 10
-var object_supply = 10
-var machine_supply = 3
+var currency = 0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -35,9 +38,8 @@ func _ready():
 
 func reset_data():
 	focused_planet = null
-	plant_supply = 10
-	object_supply = 10
-	machine_supply = 3
+	OBJECT_TYPE_SUPPLY = {"FLORA_SMALL":5,"FLORA_MED":2,"FLORA_BIG":1,"OBJECT":2,"BUILDING":1,"MACHINE":1}
+	currency = 0
 
 func set_planet_focus(new_planet = null):
 	
