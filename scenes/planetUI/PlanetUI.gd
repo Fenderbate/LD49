@@ -58,6 +58,9 @@ func _ready():
 func _physics_process(delta):
 	
 	$TimeContainer/TimeLabel.text = str(int(get_node(timer).time_left) / 60,":",int(get_node(timer).time_left) % 60,".",str(get_node(timer).time_left).substr(4,2))
+	if !Global.is_planet_null():
+		$Container/InfoPanel/VBoxContainer/OxygenDisplay/AtmosphereWarning.visible = !Global.focused_planet.get_ref().atmosphere_ideal
+		$Container/InfoPanel/VBoxContainer/TempDisplay/TemperatureWarning.visible = !Global.focused_planet.get_ref().temp_ideal
 	
 func _unhandled_input(event):
 	

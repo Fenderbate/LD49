@@ -39,7 +39,8 @@ var OBJECT_TOOLTIP = {
 var TUTORIAL_TEXT = [
 	"[b]Gameplay[/b]\nYour goal is to terraform every planet by keeping the planets' [color=#f5c22f]temperature[/color] and the [color=#4d9be6]oxygen[/color] level in check.\nInformations about the selected planet will be in the bottom left corner.\nThis needs to be done in [color=#ed4d37]10 minutes[/color], your boss is impatient.",
 	"[b]Tools to terraform[/b]\nYou can place various objects to terraform any planet!\nSelect an item from the panel at the bottom and simply place them in the proximity of the planet.\nIf you're running low on something, you can easily exchange humans by clicking the [color=#ed4d37] [+] [/color] button above the items.\n",
-	"[b]Tools to terraform[/b]\nPlants generate [color=#4d9be6]oxygen[/color] to create an atmosphere.\nMountains [color=#509ce2]cool[/color] planets. Machines will keep the [color=#ae2334]temperature[/color] at a livable state.\nSettlements will generate more [color=eeeeee]humans[/color].\nTo exchange your [color=eeeeee]humans[/color] you need to pick them up from the planet.\nYou can also [color=#ed4d37]pick up objects that you placed[/color]."
+	"[b]Tools to terraform[/b]\nPlants generate [color=#4d9be6]oxygen[/color] to create an atmosphere.\nMountains [color=#509ce2]cool[/color] planets. Machines will keep the [color=#ae2334]temperature[/color] at a livable state.\nSettlements will generate more [color=eeeeee]humans[/color].\nTo exchange your [color=eeeeee]humans[/color] you need to pick them up from the planet.\nYou can also [color=#ed4d37]pick up objects that you placed[/color].",
+	"[b]Other controls[/b]\n[color=#f5c22f][M][/color]mutes music\n[color=#f5c22f][N][/color]mutes sound\n[color=#f5c22f][R][/color]restarts the game\n[color=#f5c22f][T][/color]opens this menu again"
 	]
 
 ### CHANGING VARIABLES, RESET THERE ON RESTART ###

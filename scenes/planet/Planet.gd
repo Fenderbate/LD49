@@ -34,7 +34,7 @@ var mat
 var tut_open = false
 
 var atmosphere_ideal = false
-var temp_idead = false
+var temp_ideal = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -46,6 +46,7 @@ func _ready():
 	SignalManager.connect("remove_person",self,"on_person_removed")
 	SignalManager.connect("tutorial_open",self,"on_tutorial_opened")
 	SignalManager.connect("tutorial_close",self,"on_tutorial_closed")
+	
 	
 	
 	offset = rand_range(0,1000)
@@ -64,7 +65,7 @@ func _ready():
 	$SSInteract/InteractShape.shape.radius = shader_mask.get_width()/2
 	$PlanetSurface/SurfaceCollision.shape.radius = (planet_sprite.get_width()/2)-10
 	
-	
+	$OverviewShader/OverviewSprite/Warning.position = shader_mask.get_size().x*0.75 * Vector2(1,-1).normalized()
 
 func _physics_process(delta):
 	
@@ -79,6 +80,10 @@ func _physics_process(delta):
 		
 		$Atmosphere.self_modulate.a = atmosphere_alpha_curve.interpolate(atmosphere_density / Global.MAX_ATMOSPHERE)
 		
+		if !atmosphere_ideal or !temp_ideal:
+			$OverviewShader/OverviewSprite/Warning.show()
+		else:
+			$OverviewShader/OverviewSprite/Warning.hide()
 		
 		update()
 	
@@ -129,7 +134,7 @@ func animate_overview(show_planet = true):
 	
 	if show_planet:
 		$Tween.stop_all()
-		$Tween.interpolate_property($OverviewShader/OverviewSprite,"self_modulate",$OverviewShader/OverviewSprite.self_modulate,Color(1,1,1,0),1,Tween.TRANS_EXPO)
+		$Tween.interpolate_property($OverviewShader/OverviewSprite,"modulate",$OverviewShader/OverviewSprite.modulate,Color(1,1,1,0),1,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Halo,"self_modulate",$Halo.self_modulate,Color(1,1,1,0),1,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Clouds,"modulate",$Clouds.modulate,Color(1,1,1,1),1.2,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Atmosphere,"modulate",$Atmosphere.modulate,Color(1,1,1,1),1.2,Tween.TRANS_EXPO)
@@ -139,7 +144,7 @@ func animate_overview(show_planet = true):
 		$Tween.start()
 	else:
 		$Tween.stop_all()
-		$Tween.interpolate_property($OverviewShader/OverviewSprite,"self_modulate",$OverviewShader/OverviewSprite.self_modulate,Color(1,1,1,1),1,Tween.TRANS_EXPO)
+		$Tween.interpolate_property($OverviewShader/OverviewSprite,"modulate",$OverviewShader/OverviewSprite.modulate,Color(1,1,1,1),1,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Halo,"self_modulate",$Halo.self_modulate,Color(1,1,1,1),1,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Clouds,"modulate",$Clouds.modulate,Color(1,1,1,0),1.2,Tween.TRANS_EXPO)
 		$Tween.interpolate_property($Atmosphere,"modulate",$Atmosphere.modulate,Color(1,1,1,0),1.2,Tween.TRANS_EXPO)
@@ -199,7 +204,16 @@ func _on_UIUpdateTimer_timeout():
 			$Tween.start()
 			yield($Tween,"tween_completed")
 			$Grass.hide()
-			
+	
+	if temperature > Global.TEMP_LIMITS.CONFORT_MAX or temperature < Global.TEMP_LIMITS.CONFORT_MIN:
+		temp_ideal = false
+	else:
+		temp_ideal = true
+	
+	if atmosphere_density < 800:
+		atmosphere_ideal = false
+	else:
+		atmosphere_ideal = true
 	
 	if temperature >= Global.TEMP_LIMITS.SCORCH or temperature <= Global.TEMP_LIMITS.FREEZE:
 		if temperature >= Global.TEMP_LIMITS.SCORCH:
