@@ -10,11 +10,8 @@ var under_mouse = false
 
 # function calculations
 var MACHINE_TEMP_DELTA_CONJSTANT = 5
-var new_machine_temp_delta = 0
-var machine_temp_delta = 0
-var PLANET_TEMPS = {"COLD":-1,"NORM":0,"HOT":1}
-var current_planet_temp = PLANET_TEMPS.NORM
-var current_machine_temp = PLANET_TEMPS.NORM
+
+var MOUNTAIN_TEMP_DELTA_CONSTANT = -3
 
 var planet = null
 
@@ -34,10 +31,13 @@ func _ready():
 	$SpritePivot/Sprite.texture = data["Sprite"]
 	if !data["Type"] == Global.OBJECT_TYPE.MACHINE:
 		$SpriteAnimator.play("none")
+		if [Global.OBJECT_TYPE.FLORA_SMALL, Global.OBJECT_TYPE.FLORA_MED,Global.OBJECT_TYPE.FLORA_BIG].has(data["Type"]):
+			add_to_group("Flora")
+		if data["Type"] == Global.OBJECT_TYPE.OBJECT:
+			add_to_group("Mountain")
 	else:
 		$SpriteAnimator.play("base")
-	
-	Global.focused_planet.get_ref().oxygen_delta += data["OxygenDelta"]
+		add_to_group("Machine")
 	
 	
 	$Tween.interpolate_property($SpritePivot/Sprite,"position",Vector2(0,-anim_height),Vector2(0,-16),anim_time,Tween.TRANS_EXPO,Tween.EASE_IN)
@@ -56,23 +56,27 @@ func _input(event):
 		get_tree().set_input_as_handled()
 		remove(true)
 
-func machine_function():
+func machine_function(temperature):
+	
+	var temp = 0
+			  
+	var temp_diff = temperature - (Global.MAX_TEMPERATURE / 2)
 	
 	
+	var polarity = 0 if temp_diff == 0 else -(temp_diff / abs(temp_diff))
 	
-	if planet.temperature < Global.TEMP_LIMITS.CONFORT_MIN and current_planet_temp != PLANET_TEMPS.COLD:
-		print("new temp is cold")
-	elif planet.temperature in range(Global.TEMP_LIMITS.CONFORT_MIN,Global.TEMP_LIMITS.CONFORT_MAX) and current_planet_temp != PLANET_TEMPS.NORM:
-		print("new temp is normal")
-	elif planet.temperature < Global.TEMP_LIMITS.CONFORT_MAX and current_planet_temp != PLANET_TEMPS.HOT:
-		print("new temp is hot")
+	temp = MACHINE_TEMP_DELTA_CONJSTANT if abs((Global.MAX_TEMPERATURE / 2) - planet.temperature) > MACHINE_TEMP_DELTA_CONJSTANT else abs(500 - planet.temperature)
 	
-	if current_machine_temp != current_planet_temp:
-		
-		planet.temp_delta -= machine_temp_delta
-		new_machine_temp_delta = -MACHINE_TEMP_DELTA_CONJSTANT
-		planet.temp_delta += machine_temp_delta
-		
+	temp *= polarity
+	
+	print("temp: ",temperature," | delta: ",temp," | diff: ", temp_diff," | polarity: ",polarity)
+	
+	return temp
+
+func mountain_function(temperature):
+	
+	return MOUNTAIN_TEMP_DELTA_CONSTANT if(temperature > Global.TEMP_LIMITS.FREEZE) else 0
+	
 
 
 func remove(pickup = false):

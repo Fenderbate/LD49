@@ -40,7 +40,7 @@ func _ready():
 
 func reset_data():
 	focused_planet = null
-	OBJECT_TYPE_SUPPLY = {"FLORA_SMALL":5,"FLORA_MED":2,"FLORA_BIG":10,"OBJECT":2,"BUILDING":1,"MACHINE":1}
+	OBJECT_TYPE_SUPPLY = {"FLORA_SMALL":5,"FLORA_MED":2,"FLORA_BIG":1,"OBJECT":2,"BUILDING":1,"MACHINE":1}
 	currency = 0
 	SignalManager.emit_signal("update_supply_display")
 

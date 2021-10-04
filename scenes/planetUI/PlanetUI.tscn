@@ -203,3 +203,8 @@ expand_icon = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PoolVector2Array( 1024, 0, 0, 0, 0, 768, 1024, 768, 1024, 0 )
+width = 2.0
+default_color = Color( 0.470588, 0.290196, 0.396078, 1 )
