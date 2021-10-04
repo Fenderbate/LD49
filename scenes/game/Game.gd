@@ -120,3 +120,7 @@ func _on_Tween_tween_completed(object, key):
 
 func _on_MoveTimer_timeout():
 	moving_camera = false
+
+
+func _on_GameplayTime_timeout():
+	SceneTransition.start_transition("res://scenes/lost/Lost.tscn")

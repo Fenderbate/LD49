@@ -36,6 +36,7 @@ func _ready():
 		if data["Type"] == Global.OBJECT_TYPE.OBJECT:
 			add_to_group("Mountain")
 	else:
+		$SpritePivot/Sprite.hframes = 4
 		$SpriteAnimator.play("base")
 		add_to_group("Machine")
 	

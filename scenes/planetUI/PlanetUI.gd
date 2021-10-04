@@ -9,7 +9,7 @@ var planet_objects = {
 	"tree_2" : {"Texture":preload("res://sprites/tree_2.png"),"Type":Global.OBJECT_TYPE.FLORA_BIG,"Cost":Global.OBJECT_TYPE_COST.FLORA_BIG,"OxygenDelta":Global.OXYGEN_DELTA.BIG},
 	"mountain_1" : {"Texture":preload("res://sprites/mountain_1.png"),"Type":Global.OBJECT_TYPE.OBJECT,"Cost":Global.OBJECT_TYPE_COST.OBJECT,"OxygenDelta":Global.OXYGEN_DELTA.NONE},
 	"house_1" : {"Texture":preload("res://sprites/house_1.png"),"Type":Global.OBJECT_TYPE.BUILDING,"Cost":Global.OBJECT_TYPE_COST.BUILDING,"OxygenDelta":Global.OXYGEN_DELTA.NONE},
-	"machine_1" : {"Texture":preload("res://misc/Machine_UI_texture.tres"),"Type":Global.OBJECT_TYPE.MACHINE,"Cost":Global.OBJECT_TYPE_COST.MACHINE,"OxygenDelta":Global.OXYGEN_DELTA.NEG_BIG}
+	"machine_1" : {"Texture":preload("res://sprites/temperature_machine_1.png"),"Type":Global.OBJECT_TYPE.MACHINE,"Cost":Global.OBJECT_TYPE_COST.MACHINE,"OxygenDelta":Global.OXYGEN_DELTA.NEG_BIG}
 }
 
 
@@ -33,7 +33,7 @@ func _ready():
 		btn.type = planet_objects[item]["Type"]
 		btn.cost = planet_objects[item]["Cost"]
 		btn.obj_name = item
-		$Container/CenterContainer/GridContainer.add_child(btn)
+		$Container/ItemContainer/GridContainer.add_child(btn)
 		btn.get_node("SelectButton").connect("button_down",self,"on_object_button_pressed",[btn.type])
 		btn.get_node("AddButton").connect("button_down",self,"on_object_add_button_pressed",[btn.type])
 	
@@ -87,9 +87,9 @@ func spawn_object(height):
 
 func update_supply_display():
 	
-	for item_holder in $Container/CenterContainer/GridContainer.get_children():
+	for item_holder in $Container/ItemContainer/GridContainer.get_children():
 		item_holder.get_node("ItemCountLabel").text = str( Global.OBJECT_TYPE_SUPPLY[Global.OBJECT_TYPE_SUPPLY.keys()[item_holder.type]] )
-		$Container/Panel2/VBoxContainer/CurrencyContainer/CurrencyLabel.text = str(Global.currency)
+		$Container/CurrencyContainer/CurrencyLabel.text = str(Global.currency)
 
 func on_planet_focus_entered():
 	$Container.show()
@@ -100,8 +100,8 @@ func on_planet_focus_left():
 	$Container.hide()
 
 func on_planet_ui_updated(temperature,atmosphere,population):
-	$Container/Panel2/VBoxContainer/OxygenDisplay/OxygenSlider.value = atmosphere
-	$Container/Panel2/VBoxContainer/TempDisplay/TempSlider.value = temperature
+	$Container/InfoPanel/VBoxContainer/OxygenDisplay/OxygenSlider.value = atmosphere
+	$Container/InfoPanel/VBoxContainer/TempDisplay/TempSlider.value = temperature
 
 func on_object_button_pressed(type):
 	select_index = type

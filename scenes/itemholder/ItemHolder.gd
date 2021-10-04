@@ -1,4 +1,4 @@
-extends Panel
+extends Control
 
 
 
@@ -15,7 +15,7 @@ func _ready():
 	
 	SignalManager.connect("set_object_selection_focus",self,"on_object_selection_focus_set")
 	
-	$SelectButton/ItemRect.texture = icon
+	$SelectButton/ItemRect.texture = icon if type != Global.OBJECT_TYPE.MACHINE else load("res://misc/Machine_UI_texture.tres")
 	
 	
 
@@ -33,7 +33,6 @@ func on_object_selection_focus_set(other_type):
 func _on_AddButton_mouse_entered():
 	$CostPanel.show()
 	$CostPanel/CostLabel.text = str(cost)
-	$CostPanel/CostCurrency.texture = Global.currency_texture
 
 func _on_AddButton_mouse_exited():
 	$CostPanel.hide()

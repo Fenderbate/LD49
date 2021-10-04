@@ -6,4 +6,4 @@ load_path = "res://.import/temperature_machine_1.png-6d6f70a12cf8c1caf6d462a0d01
 [resource]
 resource_local_to_scene = true
 atlas = SubResource( 1 )
-region = Rect2( 0, 0, 128, 32 )
+region = Rect2( 0, 0, 32, 32 )
