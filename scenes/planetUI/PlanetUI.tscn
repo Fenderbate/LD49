@@ -149,12 +149,16 @@ margin_top = 10.0
 margin_right = -36.0
 margin_bottom = 4.0
 custom_icons/tick = ExtResource( 8 )
+custom_icons/grabber_disabled = ExtResource( 8 )
+custom_icons/grabber_highlight = ExtResource( 8 )
 custom_icons/grabber = ExtResource( 8 )
 custom_styles/slider = SubResource( 1 )
 custom_styles/grabber_area_highlight = SubResource( 2 )
 custom_styles/grabber_area = SubResource( 3 )
 max_value = 1000.0
 rounded = true
+editable = false
+scrollable = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -185,12 +189,16 @@ margin_top = 12.0
 margin_right = -36.0
 margin_bottom = -10.0
 custom_icons/tick = ExtResource( 8 )
+custom_icons/grabber_disabled = ExtResource( 8 )
+custom_icons/grabber_highlight = ExtResource( 8 )
 custom_icons/grabber = ExtResource( 8 )
 custom_styles/slider = SubResource( 1 )
 custom_styles/grabber_area_highlight = SubResource( 2 )
 custom_styles/grabber_area = SubResource( 3 )
 max_value = 1000.0
 rounded = true
+editable = false
+scrollable = false
 __meta__ = {
 "_edit_use_anchors_": false
 }

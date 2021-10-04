@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://sprites/sun.png" type="Texture" id=1]
 [ext_resource path="res://scenes/game/Game.gd" type="Script" id=2]
@@ -22,8 +22,9 @@
 [ext_resource path="res://sprites/planet_4_grass.png" type="Texture" id=20]
 [ext_resource path="res://sprites/sun_texture.png" type="Texture" id=21]
 [ext_resource path="res://sprites/sun_outline.png" type="Texture" id=22]
+[ext_resource path="res://sprites/planet_2_grass.png" type="Texture" id=23]
 
-[sub_resource type="Shader" id=5]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 uniform float speed = 1.0;
@@ -42,28 +43,28 @@ void fragment() {
 	COLOR = display_texture;
 }"
 
-[sub_resource type="ShaderMaterial" id=6]
-shader = SubResource( 5 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 shader_param/speed = 0.25
 shader_param/ratio = Vector2( 0.5, 1 )
 shader_param/shader_texture = ExtResource( 21 )
 
-[sub_resource type="Curve2D" id=1]
+[sub_resource type="Curve2D" id=3]
 _data = {
 "points": PoolVector2Array( 9.99383, -79.31, -9.99383, 79.31, 480, 0, 150.355, -7.31021, -150.355, 7.31021, 0, 160, 3.93298, 76.1568, -3.93298, -76.1568, -160, 0, -136.079, 5.64973, 136.079, -5.64973, 0, -160, -5.6035, -113.484, 5.6035, 113.484, 480, 0 )
 }
 
-[sub_resource type="Curve2D" id=2]
+[sub_resource type="Curve2D" id=4]
 _data = {
 "points": PoolVector2Array( 0.420544, -124.797, -0.420544, 124.797, 224, 0, 124.651, -4.94651, -124.651, 4.94651, 0, 224, 1.17113, 122.695, -1.17113, -122.695, -224, 0, -125.737, 0.843168, 125.737, -0.843168, 0, -224, -2.10636, -125.477, 2.10636, 125.477, 224, 0 )
 }
 
-[sub_resource type="Curve2D" id=3]
+[sub_resource type="Curve2D" id=5]
 _data = {
 "points": PoolVector2Array( 2.37839, -57.0817, -2.37839, 57.0817, 320, 0, 332.697, 15.7182, -332.697, -15.7182, 0, 320, -9.3768, 248.583, 9.3768, -248.583, -512, 0, -319.977, 4.74072, 319.977, -4.74072, 0, -320, -0.0563259, -69.4828, 0.0563259, 69.4828, 320, 0 )
 }
 
-[sub_resource type="Curve2D" id=4]
+[sub_resource type="Curve2D" id=6]
 _data = {
 "points": PoolVector2Array( -3.36354, -265.724, 3.36354, 265.724, 576, 0, 277.503, -3.20013, -277.503, 3.20013, 0, 384, -1.20012, 180.972, 1.20012, -180.972, -416, 0, -332.636, 31.4041, 332.636, -31.4041, 0, -384, -0.399984, -190.779, 0.399984, 190.779, 576, 0 )
 }
@@ -77,7 +78,7 @@ z_index = -100
 texture = ExtResource( 5 )
 
 [node name="Sun" type="Sprite" parent="."]
-material = SubResource( 6 )
+material = SubResource( 2 )
 texture = ExtResource( 1 )
 
 [node name="Rim" type="Sprite" parent="Sun"]
@@ -95,27 +96,27 @@ one_shot = true
 [node name="PlanetOrbit" type="Path2D" parent="." groups=[
 "Path",
 ]]
-curve = SubResource( 1 )
+curve = SubResource( 3 )
 
 [node name="Planet" parent="PlanetOrbit" instance=ExtResource( 3 )]
-position = Vector2( -72.0065, -147.573 )
-offset = 973.515
+position = Vector2( -147.663, -81.086 )
+offset = 869.852
 planet_name = "Gloul"
 planet_id = "PLANET_1"
 path_color = Color( 0.117647, 0.737255, 0.45098, 1 )
 temperature = 80.0
 camera_zoom = Vector2( 0.7, 0.7 )
 shader_mask = ExtResource( 15 )
-shader_spin_speed = 0.472004
+shader_spin_speed = 0.437334
 
 [node name="PlanetOrbit2" type="Path2D" parent="." groups=[
 "Path",
 ]]
-curve = SubResource( 2 )
+curve = SubResource( 4 )
 
 [node name="Planet2" parent="PlanetOrbit2" instance=ExtResource( 3 )]
-position = Vector2( 200.448, 99.648 )
-offset = 103.207
+position = Vector2( -215.319, 60.7516 )
+offset = 642.199
 planet_name = "Brune"
 planet_id = "PLANET_2"
 path_color = Color( 0.686275, 0.298039, 0.129412, 1 )
@@ -127,17 +128,18 @@ highlight_ring = ExtResource( 6 )
 shader_mask = ExtResource( 15 )
 barren_shader_texture = ExtResource( 7 )
 terraformed_shader_texture = ExtResource( 9 )
-shader_spin_speed = 0.318216
+shader_spin_speed = 0.292416
 planet_sprite = ExtResource( 14 )
+planet_grass = ExtResource( 23 )
 
 [node name="PlanetOrbit3" type="Path2D" parent="." groups=[
 "Path",
 ]]
-curve = SubResource( 3 )
+curve = SubResource( 5 )
 
 [node name="Planet3" parent="PlanetOrbit3" instance=ExtResource( 3 )]
-position = Vector2( -172.53, 305.812 )
-offset = 698.982
+position = Vector2( 232.92, 254.389 )
+offset = 277.394
 planet_name = "Zyrra"
 planet_id = "PLANET_3"
 path_color = Color( 0.301961, 0.607843, 0.901961, 1 )
@@ -148,18 +150,18 @@ camera_zoom = Vector2( 0.7, 0.7 )
 highlight_ring = ExtResource( 13 )
 barren_shader_texture = ExtResource( 10 )
 terraformed_shader_texture = ExtResource( 8 )
-shader_spin_speed = 0.218694
+shader_spin_speed = 0.344882
 planet_sprite = ExtResource( 11 )
 planet_grass = ExtResource( 12 )
 
 [node name="PlanetOrbit4" type="Path2D" parent="." groups=[
 "Path",
 ]]
-curve = SubResource( 4 )
+curve = SubResource( 6 )
 
 [node name="Planet4" parent="PlanetOrbit4" instance=ExtResource( 3 )]
-position = Vector2( 84.64, 379.552 )
-offset = 684.34
+position = Vector2( 531.305, 164.127 )
+offset = 172.116
 planet_name = "Purl"
 planet_id = "PLANET_4"
 path_color = Color( 0.756863, 0.133333, 0.32549, 1 )
@@ -169,7 +171,7 @@ camera_zoom = Vector2( 0.7, 0.7 )
 highlight_ring = ExtResource( 19 )
 barren_shader_texture = ExtResource( 17 )
 terraformed_shader_texture = ExtResource( 18 )
-shader_spin_speed = 0.270358
+shader_spin_speed = 0.256844
 planet_sprite = ExtResource( 16 )
 planet_grass = ExtResource( 20 )
 
