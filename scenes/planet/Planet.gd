@@ -68,14 +68,6 @@ func _physics_process(delta):
 		
 		$Atmosphere.self_modulate.a = atmosphere_alpha_curve.interpolate(atmosphere_density / Global.MAX_ATMOSPHERE)
 		
-		var first_temp_delta = temp_delta
-		
-		check_temp_zone()
-		
-		if first_temp_delta != temp_delta:
-			print(planet_name,": ",first_temp_delta," - ",temp_delta)
-		
-		pass
 		
 		update()
 	
@@ -104,25 +96,22 @@ func load_shader_assets():
 
 func check_temp_zone():
 	
-	
+	var new_temp_delta = 0
 	
 	dist = (global_position - position).distance_to(Vector2() - global_position)
 	
 	if dist <= Global.SCORCH_DISTANCE:
-		temp_delta = Global.TEMP_DELTA.SCORCH
-		return
+		new_temp_delta = Global.TEMP_DELTA.SCORCH
 	elif dist >= Global.HEAT_DISTANCE and dist <= Global.CONFORT_MINIMUM:
-		temp_delta = Global.TEMP_DELTA.HEAT
-		return
+		new_temp_delta = Global.TEMP_DELTA.HEAT
 	elif dist >= Global.CONFORT_MINIMUM and dist <= Global.CONFORT_MAXIMUM:
-		temp_delta = Global.TEMP_DELTA.CONFORT
-		return
+		new_temp_delta = Global.TEMP_DELTA.CONFORT
 	elif dist >= Global.COLD_DISTANCE:
-		temp_delta = Global.TEMP_DELTA.COLD
-		return
+		new_temp_delta = Global.TEMP_DELTA.COLD
 	elif dist >= Global.FREEZE_DISTANCE:
-		temp_delta = Global.TEMP_DELTA.FREEZE
-		return
+		new_temp_delta = Global.TEMP_DELTA.FREEZE
+	
+	return new_temp_delta
 	
 
 func animate_overview(show_planet = true):
@@ -161,8 +150,19 @@ func _on_SSInteract_input_event(viewport, event, shape_idx):
 
 
 func _on_UIUpdateTimer_timeout():
-	temperature = clamp(temperature + temp_delta, 0, Global.MAX_TEMPERATURE)
-	atmosphere_density = clamp(atmosphere_density + oxygen_delta, 0, Global.MAX_ATMOSPHERE)
+	
+	temperature += check_temp_zone()
+	
+	for object in $Objects.get_children(): #get_tree().get_nodes_in_group("Machine")
+		if object.is_in_group("Machine"):
+			temperature += object.machine_function(temperature)
+			
+			temperature = clamp(temperature, 0, Global.MAX_TEMPERATURE)
+		elif object.is_in_group("Mountain"):
+			temperature += object.mountain_function(temperature)
+		elif object.is_in_group("Flora"):
+			atmosphere_density = clamp(atmosphere_density + object.data["OxygenDelta"], 0, Global.MAX_ATMOSPHERE)
+	
 	if (temperature < 600 and temperature > 400) and atmosphere_density > 800:
 		mat.set_shader_param("shader_texture",terraformed_shader_texture)
 		$Clouds.show()
