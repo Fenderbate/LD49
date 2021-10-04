@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 9, 6 )
 
-[sub_resource type="Shader" id=4]
+[sub_resource type="Shader" id=2]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -19,13 +19,13 @@ void fragment(){
 	COLOR = color;
 }"
 
-[sub_resource type="ShaderMaterial" id=5]
+[sub_resource type="ShaderMaterial" id=3]
 resource_local_to_scene = true
-shader = SubResource( 4 )
+shader = SubResource( 2 )
 shader_param/flash_color = Color( 1, 1, 1, 1 )
 shader_param/flash_modifier = 0.0
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=4]
 resource_name = "ascend"
 length = 0.5
 tracks/0/type = "value"
@@ -41,8 +41,7 @@ tracks/0/keys = {
 "values": [ Vector2( -8, 0 ), Vector2( -26, 0 ) ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "idle"
+[sub_resource type="Animation" id=5]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:position")
 tracks/0/interp = 1
@@ -68,8 +67,7 @@ tracks/1/keys = {
 "values": [ -89.9999 ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "walk"
+[sub_resource type="Animation" id=6]
 length = 0.6
 loop = true
 step = 0.05
@@ -111,7 +109,7 @@ position = Vector2( -9, 0 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 5 )
+material = SubResource( 3 )
 position = Vector2( -8, 0 )
 rotation = -1.57079
 texture = ExtResource( 1 )
@@ -119,11 +117,15 @@ hframes = 5
 vframes = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/ascend = SubResource( 6 )
-anims/idle = SubResource( 2 )
-anims/walk = SubResource( 3 )
+anims/ascend = SubResource( 4 )
+anims/idle = SubResource( 5 )
+anims/walk = SubResource( 6 )
 
 [node name="Tween" type="Tween" parent="."]
 
+[node name="MoveTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="mouse_entered" from="." to="." method="_on_Person_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_Person_mouse_exited"]
+[connection signal="timeout" from="MoveTimer" to="." method="_on_MoveTimer_timeout"]

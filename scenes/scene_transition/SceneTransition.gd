@@ -8,8 +8,7 @@ var transition_done = false
 var restart = false
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	print("YAH")
+
 
 func _input(event):
 	
@@ -32,7 +31,7 @@ func _on_Tween_tween_completed(object, key):
 		if restart:
 			get_tree().reload_current_scene()
 		else:
-			get_tree().change_scene_to(load(new_scene).instance())
+			get_tree().change_scene(new_scene)
 		$Tween.interpolate_property($Sprite.material,"shader_param/progress", 1, 0, 1, Tween.TRANS_CUBIC, Tween.EASE_OUT) 
 		$Tween.start()
 	transition_done = true

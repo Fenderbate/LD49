@@ -15,6 +15,10 @@ func _ready():
 	Global.reset_data()
 	
 	SignalManager.connect("planet_interact",self,"_on_planet_interacted")
+	SignalManager.connect("game_win",self,"on_game_won")
+	SignalManager.connect("game_lose",self,"on_game_lost")
+	SignalManager.connect("tutorial_open",self,"on_tutorial_opened")
+	SignalManager.connect("tutorial_close",self,"on_tutorial_closed")
 	
 
 func _draw():
@@ -123,4 +127,19 @@ func _on_MoveTimer_timeout():
 
 
 func _on_GameplayTime_timeout():
-	SceneTransition.start_transition("res://scenes/lost/Lost.tscn")
+	SignalManager.emit_signal("game_lose")
+
+func on_tutorial_opened():
+	$GameplayTime.paused = true
+	print("TIMER IS PAUSED: ",$GameplayTime.paused)
+
+func on_tutorial_closed():
+	$GameplayTime.paused = false
+	print("TIMER IS PAUSED: ",$GameplayTime.paused)
+
+func on_game_won():
+	$GameplayTime.paused = true
+
+func on_game_lost():
+	
+	pass
