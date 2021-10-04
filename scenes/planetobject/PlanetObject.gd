@@ -1,12 +1,22 @@
 extends KinematicBody2D
 class_name PlanetObject
 
-# calculations
+# anim calculations
 var anim_height = 0
 var anim_time = 1
 
 # interactions
 var under_mouse = false
+
+# function calculations
+var MACHINE_TEMP_DELTA_CONJSTANT = 5
+var new_machine_temp_delta = 0
+var machine_temp_delta = 0
+var PLANET_TEMPS = {"COLD":-1,"NORM":0,"HOT":1}
+var current_planet_temp = PLANET_TEMPS.NORM
+var current_machine_temp = PLANET_TEMPS.NORM
+
+var planet = null
 
 # init vars
 var data = {
@@ -18,12 +28,16 @@ var data = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	planet = get_parent().get_parent()
+	
 	look_at(get_parent().global_position)
 	$SpritePivot/Sprite.texture = data["Sprite"]
 	if !data["Type"] == Global.OBJECT_TYPE.MACHINE:
 		$SpriteAnimator.play("none")
 	else:
 		$SpriteAnimator.play("base")
+	
+	Global.focused_planet.get_ref().oxygen_delta += data["OxygenDelta"]
 	
 	
 	$Tween.interpolate_property($SpritePivot/Sprite,"position",Vector2(0,-anim_height),Vector2(0,-16),anim_time,Tween.TRANS_EXPO,Tween.EASE_IN)
@@ -42,6 +56,23 @@ func _input(event):
 		get_tree().set_input_as_handled()
 		remove(true)
 
+func machine_function():
+	
+	
+	
+	if planet.temperature < Global.TEMP_LIMITS.CONFORT_MIN and current_planet_temp != PLANET_TEMPS.COLD:
+		print("new temp is cold")
+	elif planet.temperature in range(Global.TEMP_LIMITS.CONFORT_MIN,Global.TEMP_LIMITS.CONFORT_MAX) and current_planet_temp != PLANET_TEMPS.NORM:
+		print("new temp is normal")
+	elif planet.temperature < Global.TEMP_LIMITS.CONFORT_MAX and current_planet_temp != PLANET_TEMPS.HOT:
+		print("new temp is hot")
+	
+	if current_machine_temp != current_planet_temp:
+		
+		planet.temp_delta -= machine_temp_delta
+		new_machine_temp_delta = -MACHINE_TEMP_DELTA_CONJSTANT
+		planet.temp_delta += machine_temp_delta
+		
 
 
 func remove(pickup = false):
@@ -93,5 +124,5 @@ func _on_Tween_tween_completed(object, key):
 		if data["Type"] == Global.OBJECT_TYPE.BUILDING:
 			$BuildingSpawnTimer.start()
 	
-	Global.focused_planet.get_ref().oxygen_delta += data["OxygenDelta"]
+	
 	
