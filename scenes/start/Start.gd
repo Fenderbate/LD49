@@ -17,5 +17,4 @@ func _ready():
 
 
 func _on_StartButton_button_down():
-	print("asfdsadséflgmnadlkéhgn")
-	SceneTransition.start_transition("res://scenes/game/Game.tscn")
+	SceneTransition.start_transition("res://scenes/game/Game.tscn",false)

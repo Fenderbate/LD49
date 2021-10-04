@@ -1,8 +1,33 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://misc/Font_x36.tres" type="DynamicFont" id=1]
 [ext_resource path="res://scenes/start/Start.gd" type="Script" id=2]
-[ext_resource path="res://sprites/UI/ui_border.png" type="Texture" id=3]
+[ext_resource path="res://sprites/logo.png" type="Texture" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "float"
+length = 5.0
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("TextureRect:rect_position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 3, 5 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("TextureRect:rect_position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( -60, -0.25, 0, 0.92, 0.59444, -20, -0.93, -1.07223, 0.79, -1.07223, -60, -0.72, 0.59444, 0.25, 0 ),
+"times": PoolRealArray( 0, 3, 5 )
+}
 
 [node name="Start" type="Control"]
 script = ExtResource( 2 )
@@ -13,8 +38,13 @@ __meta__ = {
 [node name="TextureRect" type="TextureRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = -20.0
+margin_right = 1021.0
+margin_bottom = 750.0
 mouse_filter = 2
 texture = ExtResource( 3 )
+expand = true
+stretch_mode = 4
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -38,5 +68,9 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "float"
+anims/float = SubResource( 1 )
 
 [connection signal="button_down" from="StartButton" to="." method="_on_StartButton_button_down"]

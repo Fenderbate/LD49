@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://sprites/UI/ui_item_panel.png" type="Texture" id=1]
 [ext_resource path="res://scenes/planetUI/PlanetUI.gd" type="Script" id=2]
@@ -12,6 +12,18 @@
 [ext_resource path="res://sprites/UI/ui_info_panel.png" type="Texture" id=10]
 [ext_resource path="res://sprites/UI/ui_currency_panel.png" type="Texture" id=11]
 [ext_resource path="res://sprites/UI/ui_tooltip_panel.png" type="Texture" id=12]
+[ext_resource path="res://sprites/UI/ui_win_graphics.png" type="Texture" id=13]
+[ext_resource path="res://sprites/UI/ui_game_over_graphics.png" type="Texture" id=14]
+[ext_resource path="res://sprites/UI/ui_game_over_panel.png" type="Texture" id=15]
+[ext_resource path="res://sprites/UI/close_button.png" type="Texture" id=16]
+[ext_resource path="res://sprites/UI/close_button_hover.png" type="Texture" id=17]
+[ext_resource path="res://sprites/UI/ui_timer.png" type="Texture" id=18]
+[ext_resource path="res://sprites/UI/ui_tutorial_panel.png" type="Texture" id=19]
+[ext_resource path="res://sprites/UI/ui_prev_button_hover.png" type="Texture" id=20]
+[ext_resource path="res://sprites/UI/ui_next_button_hover.png" type="Texture" id=21]
+[ext_resource path="res://sprites/UI/ui_next_button.png" type="Texture" id=22]
+[ext_resource path="res://sprites/UI/ui_prev_button.png" type="Texture" id=23]
+[ext_resource path="res://sprites/UI_warning_bubble.png" type="Texture" id=24]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
@@ -26,6 +38,31 @@ region_rect = Rect2( 0, 0, 6, 65 )
 
 [node name="PlanetUI" type="CanvasLayer"]
 script = ExtResource( 2 )
+
+[node name="TimeContainer" type="TextureRect" parent="."]
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 128.0
+margin_bottom = 50.0
+texture = ExtResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimeLabel" type="Label" parent="TimeContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = -6.0
+margin_bottom = -6.0
+custom_fonts/font = ExtResource( 9 )
+text = "00:00"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Container" type="TextureRect" parent="."]
 anchor_right = 1.0
@@ -88,6 +125,9 @@ margin_top = -232.0
 margin_right = 232.0
 margin_bottom = -6.0
 texture = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Container/InfoPanel"]
 anchor_right = 1.0
@@ -97,7 +137,7 @@ __meta__ = {
 }
 
 [node name="OxygenDisplay" type="Control" parent="Container/InfoPanel/VBoxContainer"]
-margin_right = 226.0
+margin_right = 244.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 0, 32 )
 
@@ -106,7 +146,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 36.0
 margin_top = 10.0
-margin_right = -18.0
+margin_right = -36.0
 margin_bottom = 4.0
 custom_icons/tick = ExtResource( 8 )
 custom_icons/grabber = ExtResource( 8 )
@@ -119,9 +159,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="AtmosphereWarning" type="TextureRect" parent="Container/InfoPanel/VBoxContainer/OxygenDisplay"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -32.0
+margin_top = -8.0
+margin_right = 8.0
+margin_bottom = 32.0
+texture = ExtResource( 24 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TempDisplay" type="Control" parent="Container/InfoPanel/VBoxContainer"]
 margin_top = 36.0
-margin_right = 226.0
+margin_right = 244.0
 margin_bottom = 84.0
 rect_min_size = Vector2( 0, 48 )
 
@@ -130,7 +182,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 36.0
 margin_top = 12.0
-margin_right = -18.0
+margin_right = -36.0
 margin_bottom = -10.0
 custom_icons/tick = ExtResource( 8 )
 custom_icons/grabber = ExtResource( 8 )
@@ -139,6 +191,66 @@ custom_styles/grabber_area_highlight = SubResource( 2 )
 custom_styles/grabber_area = SubResource( 3 )
 max_value = 1000.0
 rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TemperatureWarning" type="TextureRect" parent="Container/InfoPanel/VBoxContainer/TempDisplay"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -32.0
+margin_top = -6.0
+margin_right = 8.0
+margin_bottom = 34.0
+texture = ExtResource( 24 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RotationSpeedDisplay" type="Control" parent="Container/InfoPanel/VBoxContainer"]
+margin_top = 88.0
+margin_right = 244.0
+margin_bottom = 122.0
+rect_min_size = Vector2( 0, 34 )
+
+[node name="RotationLabel" type="Label" parent="Container/InfoPanel/VBoxContainer/RotationSpeedDisplay"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 50.0
+custom_fonts/font = ExtResource( 9 )
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SunDistanceDisplay" type="Control" parent="Container/InfoPanel/VBoxContainer"]
+margin_top = 126.0
+margin_right = 244.0
+margin_bottom = 165.0
+rect_min_size = Vector2( 0, 39 )
+
+[node name="DistanceLabel" type="Label" parent="Container/InfoPanel/VBoxContainer/SunDistanceDisplay"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 50.0
+custom_fonts/font = ExtResource( 9 )
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PopulationDisplay" type="Control" parent="Container/InfoPanel/VBoxContainer"]
+margin_top = 169.0
+margin_right = 244.0
+margin_bottom = 211.0
+rect_min_size = Vector2( 0, 42 )
+
+[node name="PopulationLabel" type="Label" parent="Container/InfoPanel/VBoxContainer/PopulationDisplay"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 45.0
+custom_fonts/font = ExtResource( 9 )
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -196,6 +308,7 @@ __meta__ = {
 }
 
 [node name="TooltipContainer" type="TextureRect" parent="Container"]
+visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -208,3 +321,237 @@ texture = ExtResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TooltipLabel" type="Label" parent="Container/TooltipContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+custom_fonts/font = ExtResource( 9 )
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameLostContariner" type="CenterContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LostPanel" type="TextureRect" parent="GameLostContariner"]
+margin_left = 331.0
+margin_top = 271.0
+margin_right = 693.0
+margin_bottom = 497.0
+rect_min_size = Vector2( 350, 220 )
+texture = ExtResource( 15 )
+
+[node name="BG" type="TextureRect" parent="GameLostContariner/LostPanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -181.0
+margin_top = -150.0
+margin_right = 181.0
+rect_min_size = Vector2( 0, 20 )
+texture = ExtResource( 14 )
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="RichTextLabel" parent="GameLostContariner/LostPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/bold_font = ExtResource( 9 )
+custom_fonts/normal_font = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "[center][color=#ae2334]You Failed![/color]
+[b]You ran out of time!
+
+Press [color=#452e3b] [R] [/color]to restart,
+or look around if you wish![/b][/center]"
+text = "You Failed!
+You ran out of time!
+
+Press  [R] to restart,
+or look around if you wish!"
+
+[node name="LostButton" type="TextureButton" parent="GameLostContariner/LostPanel"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -24.0
+margin_top = 6.0
+margin_right = -6.0
+margin_bottom = 24.0
+texture_normal = ExtResource( 16 )
+texture_hover = ExtResource( 17 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameWonContainer" type="CenterContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WinPanel" type="TextureRect" parent="GameWonContainer"]
+margin_left = 331.0
+margin_top = 271.0
+margin_right = 693.0
+margin_bottom = 497.0
+rect_min_size = Vector2( 350, 220 )
+texture = ExtResource( 15 )
+
+[node name="BG" type="TextureRect" parent="GameWonContainer/WinPanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -181.0
+margin_top = -150.0
+margin_right = 181.0
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="RichTextLabel" parent="GameWonContainer/WinPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/bold_font = ExtResource( 9 )
+custom_fonts/normal_font = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "[center][color=#4d9be6] You Win! [/color]
+[b]You colonised every planet!
+
+Press [color=#452e3b] [R] [/color]to restart,
+or look around if you wish![/b][/center]"
+text = " You Win! 
+You colonised every planet!
+
+Press  [R] to restart,
+or look around if you wish!"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WinButton" type="TextureButton" parent="GameWonContainer/WinPanel"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -24.0
+margin_top = 6.0
+margin_right = -6.0
+margin_bottom = 24.0
+texture_normal = ExtResource( 16 )
+texture_hover = ExtResource( 17 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TutorialContainer" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -181.0
+margin_top = -219.0
+margin_right = 181.0
+margin_bottom = 219.0
+texture = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TutorialContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = -6.0
+margin_bottom = -6.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="TutorialContainer/VBoxContainer"]
+margin_right = 370.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TutorialContainer/VBoxContainer"]
+margin_top = 4.0
+margin_right = 370.0
+margin_bottom = 22.0
+alignment = 2
+
+[node name="Close" type="TextureButton" parent="TutorialContainer/VBoxContainer/HBoxContainer"]
+margin_left = 348.0
+margin_right = 366.0
+margin_bottom = 18.0
+texture_normal = ExtResource( 16 )
+texture_hover = ExtResource( 17 )
+
+[node name="Control" type="Control" parent="TutorialContainer/VBoxContainer/HBoxContainer"]
+margin_left = 370.0
+margin_right = 370.0
+margin_bottom = 18.0
+
+[node name="TutorialLabel" type="RichTextLabel" parent="TutorialContainer/VBoxContainer" groups=[
+"TutorialText",
+]]
+margin_top = 26.0
+margin_right = 370.0
+margin_bottom = 376.0
+rect_min_size = Vector2( 350, 350 )
+custom_fonts/bold_font = ExtResource( 7 )
+custom_fonts/normal_font = ExtResource( 9 )
+bbcode_enabled = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="TutorialContainer/VBoxContainer"]
+margin_top = 380.0
+margin_right = 370.0
+margin_bottom = 412.0
+alignment = 1
+
+[node name="Prev" type="TextureButton" parent="TutorialContainer/VBoxContainer/HBoxContainer2"]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_left = 124.0
+margin_right = 156.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+texture_normal = ExtResource( 23 )
+texture_hover = ExtResource( 20 )
+expand = true
+stretch_mode = 3
+
+[node name="Padding" type="Control" parent="TutorialContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 160.0
+margin_right = 210.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="Next" type="TextureButton" parent="TutorialContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 214.0
+margin_right = 246.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 2 )
+texture_normal = ExtResource( 22 )
+texture_hover = ExtResource( 21 )
+expand = true
+stretch_mode = 3
+
+[connection signal="button_down" from="GameLostContariner/LostPanel/LostButton" to="." method="_on_LostButton_button_down"]
+[connection signal="button_down" from="GameWonContainer/WinPanel/WinButton" to="." method="_on_WinButton_button_down"]
+[connection signal="visibility_changed" from="TutorialContainer" to="." method="_on_TutorialContainer_visibility_changed"]
+[connection signal="button_down" from="TutorialContainer/VBoxContainer/HBoxContainer/Close" to="." method="_on_Close_button_down"]
+[connection signal="button_down" from="TutorialContainer/VBoxContainer/HBoxContainer2/Prev" to="." method="_on_Prev_button_down"]
+[connection signal="button_down" from="TutorialContainer/VBoxContainer/HBoxContainer2/Next" to="." method="_on_Next_button_down"]

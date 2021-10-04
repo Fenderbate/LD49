@@ -3,17 +3,19 @@ class_name PlanetObject
 
 # anim calculations
 var anim_height = 0
-var anim_time = 1
+var anim_time = 1.5
 
 # interactions
 var under_mouse = false
 
 # function calculations
-var MACHINE_TEMP_DELTA_CONJSTANT = 5
+var MACHINE_TEMP_DELTA_CONJSTANT = 20
 
-var MOUNTAIN_TEMP_DELTA_CONSTANT = -3
+var MOUNTAIN_TEMP_DELTA_CONSTANT = -9
 
 var planet = null
+
+var can_emit = false
 
 # init vars
 var data = {
@@ -45,6 +47,9 @@ func _ready():
 	$Tween.interpolate_property($SpritePivot/Sprite.material,"shader_param/flash_modifier",1.0,0.0,anim_time* 0.3,Tween.TRANS_CUBIC)
 	$Tween.start()
 	
+	$Teleport.play()
+	$Land.play()
+	
 	$LandParticleTimer.wait_time = anim_time
 	$LandParticleTimer.start()
 	
@@ -56,6 +61,7 @@ func _input(event):
 	if event.is_action_pressed("left_click") and under_mouse:
 		get_tree().set_input_as_handled()
 		remove(true)
+		SignalManager.emit_signal("reset_select_index")
 
 func machine_function(temperature):
 	
@@ -70,7 +76,16 @@ func machine_function(temperature):
 	
 	temp *= polarity
 	
-	print("temp: ",temperature," | delta: ",temp," | diff: ", temp_diff," | polarity: ",polarity)
+	if can_emit:
+		if temp > 0:
+			if !$HeatParticles.emitting: $HeatParticles.emitting = true
+			if $CoolParticles.emitting: $CoolParticles.emitting = false
+		elif temp < 0:
+			if $HeatParticles.emitting: $HeatParticles.emitting = false
+			if !$CoolParticles.emitting: $CoolParticles.emitting = true
+		else:
+			if $HeatParticles.emitting: $HeatParticles.emitting = false
+			if $CoolParticles.emitting: $CoolParticles.emitting = false
 	
 	return temp
 
@@ -111,23 +126,29 @@ func _on_PlanetObject_mouse_exited():
 
 
 func _on_BuildingSpawnTimer_timeout():
-	var p = Global.person.instance()
-	
-	p.position = position
-	
-	get_parent().add_child(p)
+	if planet.habitable:
+		var p = Global.person.instance()
+		
+		p.position = position
+		
+		get_parent().add_child(p)
+		
+		$BuildingSpawnTimer.wait_time = rand_range(1.5,3)
+	$BuildingSpawnTimer.start()
 	
 
 
 func _on_LandParticleTimer_timeout():
-	$AnimationPlayer.play("squash")
-	$Particles.emitting = true
-
+	pass
 
 func _on_Tween_tween_completed(object, key):
+	
 	if key == ":position":
+		$AnimationPlayer.play("squash")
+		$Particles.emitting = true
+		input_pickable = true
 		if data["Type"] == Global.OBJECT_TYPE.BUILDING:
 			$BuildingSpawnTimer.start()
 	
-	
-	
+func _on_Land_finished():
+	can_emit = true
