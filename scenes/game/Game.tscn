@@ -99,15 +99,18 @@ one_shot = true
 curve = SubResource( 3 )
 
 [node name="Planet" parent="PlanetOrbit" instance=ExtResource( 3 )]
-position = Vector2( -147.663, -81.086 )
-offset = 869.852
+position = Vector2( -97.5963, 144.388 )
+offset = 621.225
 planet_name = "Gloul"
 planet_id = "PLANET_1"
 path_color = Color( 0.117647, 0.737255, 0.45098, 1 )
 temperature = 80.0
+atmosphere_density = 50.0
+atmosphere_delta = -1
+max_population = 15
 camera_zoom = Vector2( 0.7, 0.7 )
 shader_mask = ExtResource( 15 )
-shader_spin_speed = 0.437334
+shader_spin_speed = 0.273197
 
 [node name="PlanetOrbit2" type="Path2D" parent="." groups=[
 "Path",
@@ -115,20 +118,21 @@ shader_spin_speed = 0.437334
 curve = SubResource( 4 )
 
 [node name="Planet2" parent="PlanetOrbit2" instance=ExtResource( 3 )]
-position = Vector2( -215.319, 60.7516 )
-offset = 642.199
+position = Vector2( -56.6727, 218.427 )
+offset = 407.612
 planet_name = "Brune"
 planet_id = "PLANET_2"
 path_color = Color( 0.686275, 0.298039, 0.129412, 1 )
 temperature = 500.0
-atmosphere_density = 10.0
+atmosphere_density = 150.0
+max_population = 20
 orbit_speed = 2.0
 camera_zoom = Vector2( 0.7, 0.7 )
 highlight_ring = ExtResource( 6 )
 shader_mask = ExtResource( 15 )
 barren_shader_texture = ExtResource( 7 )
 terraformed_shader_texture = ExtResource( 9 )
-shader_spin_speed = 0.292416
+shader_spin_speed = 0.405927
 planet_sprite = ExtResource( 14 )
 planet_grass = ExtResource( 23 )
 
@@ -138,19 +142,21 @@ planet_grass = ExtResource( 23 )
 curve = SubResource( 5 )
 
 [node name="Planet3" parent="PlanetOrbit3" instance=ExtResource( 3 )]
-position = Vector2( 232.92, 254.389 )
-offset = 277.394
+position = Vector2( 316.326, 71.6118 )
+offset = 71.7473
 planet_name = "Zyrra"
 planet_id = "PLANET_3"
 path_color = Color( 0.301961, 0.607843, 0.901961, 1 )
 temperature = 30.0
-atmosphere_density = 10.0
+atmosphere_density = 50.0
+atmosphere_delta = -2
+max_population = 25
 orbit_speed = 2.3
 camera_zoom = Vector2( 0.7, 0.7 )
 highlight_ring = ExtResource( 13 )
 barren_shader_texture = ExtResource( 10 )
 terraformed_shader_texture = ExtResource( 8 )
-shader_spin_speed = 0.344882
+shader_spin_speed = 0.416512
 planet_sprite = ExtResource( 11 )
 planet_grass = ExtResource( 12 )
 
@@ -160,18 +166,19 @@ planet_grass = ExtResource( 12 )
 curve = SubResource( 6 )
 
 [node name="Planet4" parent="PlanetOrbit4" instance=ExtResource( 3 )]
-position = Vector2( 531.305, 164.127 )
-offset = 172.116
+position = Vector2( 15.9951, 383.692 )
+offset = 753.033
 planet_name = "Purl"
 planet_id = "PLANET_4"
 path_color = Color( 0.756863, 0.133333, 0.32549, 1 )
-atmosphere_density = 20.0
+atmosphere_delta = -3
+max_population = 30
 orbit_speed = 1.8
 camera_zoom = Vector2( 0.7, 0.7 )
 highlight_ring = ExtResource( 19 )
 barren_shader_texture = ExtResource( 17 )
 terraformed_shader_texture = ExtResource( 18 )
-shader_spin_speed = 0.256844
+shader_spin_speed = 0.276048
 planet_sprite = ExtResource( 16 )
 planet_grass = ExtResource( 20 )
 

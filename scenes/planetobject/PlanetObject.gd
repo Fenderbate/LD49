@@ -111,6 +111,8 @@ func remove(pickup = false):
 		$Tween.interpolate_property($SpritePivot/Sprite.material,"shader_param/flash_modifier",0,1,0.25,Tween.TRANS_CUBIC)
 		$Tween.start()
 		
+		$Teleport.play()
+		
 		yield($Tween,"tween_all_completed")
 		
 		Global.OBJECT_TYPE_SUPPLY[Global.OBJECT_TYPE.keys()[data["Type"]]] += 1
@@ -126,7 +128,7 @@ func _on_PlanetObject_mouse_exited():
 
 
 func _on_BuildingSpawnTimer_timeout():
-	if planet.habitable:
+	if planet.habitable and planet.population < planet.max_population:
 		var p = Global.person.instance()
 		
 		p.position = position

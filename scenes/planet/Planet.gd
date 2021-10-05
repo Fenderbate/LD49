@@ -8,7 +8,9 @@ export(Color)var path_color
 export(Curve)var atmosphere_alpha_curve
 export(float)var temperature = 0
 export(float)var atmosphere_density = 0
-export(float)var population = 0
+export(Global.OXYGEN_DELTA)var atmosphere_delta = Global.OXYGEN_DELTA.NONE
+export(int)var population = 0
+export(int)var max_population = 10
 export(float)var orbit_speed = 1
 export(Vector2)var camera_zoom = Vector2(1.3,1.3)
 export(Texture)var highlight_ring
@@ -179,6 +181,8 @@ func _on_UIUpdateTimer_timeout():
 		elif object.is_in_group("Flora"):
 			atmosphere_density = clamp(atmosphere_density + object.data["OxygenDelta"], 0, Global.MAX_ATMOSPHERE)
 	
+	atmosphere_density = clamp(atmosphere_density + atmosphere_delta, 0, Global.MAX_ATMOSPHERE)
+	
 	if (temperature < Global.TEMP_LIMITS.CONFORT_MAX and temperature > Global.TEMP_LIMITS.CONFORT_MIN) and atmosphere_density > 800:
 		mat.set_shader_param("shader_texture",terraformed_shader_texture)
 		$Clouds.show()
@@ -188,6 +192,7 @@ func _on_UIUpdateTimer_timeout():
 		if !$Grass.visible and Global.check_focused_planet(self):
 			Global.change_planet_status(planet_id,1)
 			$Grass.show()
+			$Grass.self_modulate = Color(1,1,1,1)
 			$Tween.interpolate_property($Grass.material,"shader_param/flash_modifier",1,0,1,Tween.TRANS_EXPO,Tween.EASE_OUT)
 			$Tween.start()
 			yield($Tween,"tween_completed")
@@ -197,6 +202,10 @@ func _on_UIUpdateTimer_timeout():
 		$Clouds.hide()
 		
 		habitable = false
+		
+		for object in $Objects.get_children():
+			if object.is_in_group("Person"):
+				object.remove(false)
 		
 		if $Grass.visible and Global.check_focused_planet(self):
 			Global.change_planet_status(planet_id,0)

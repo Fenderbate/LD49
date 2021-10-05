@@ -75,10 +75,13 @@ func remove(pickup = false):
 		$AnimationPlayer.play("ascend")
 		$Tween.start()
 		
+		$Teleport.play()
+		
 		yield($Tween,"tween_all_completed")
 		
 		Global.currency += 1
 		SignalManager.emit_signal("update_supply_display")
+		
 	
 	SignalManager.emit_signal("remove_person",get_parent().get_parent().planet_id)
 	queue_free()

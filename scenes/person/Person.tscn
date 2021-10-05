@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://sprites/humans.png" type="Texture" id=1]
 [ext_resource path="res://scenes/person/Person.gd" type="Script" id=2]
+[ext_resource path="res://sounds/teleport.ogg" type="AudioStream" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 9, 6 )
+extents = Vector2( 9, 9 )
 
 [sub_resource type="Shader" id=2]
 resource_local_to_scene = true
@@ -125,6 +126,10 @@ anims/walk = SubResource( 6 )
 
 [node name="MoveTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="Teleport" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+bus = "Sound"
 
 [connection signal="mouse_entered" from="." to="." method="_on_Person_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_Person_mouse_exited"]
